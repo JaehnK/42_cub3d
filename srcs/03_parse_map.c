@@ -55,7 +55,7 @@ t_map_list	*alloc_map_list(int fd)
 	head = NULL;
 	while (line)
 	{
-		if (!line)
+		if (!line && (line[0] == '1' || line[0] == '0'))
 			break ;
 		else
 		{
@@ -65,8 +65,8 @@ t_map_list	*alloc_map_list(int fd)
 				alloc_new_node(idx++, line, &head);
 			line = get_next_line(fd);
 		}
+		head->idx = idx - 1;
 	}
-	head->idx = idx - 1;
 	return (head);
 }
 
@@ -100,6 +100,5 @@ int	ft_parse_map(int fd, t_file **f)
 		ft_exit("Error\n: Failed to Read Map\n", 1, f);
 	printlist(node);
 	convert_list_to_array(&node, f);
-	(*f)->escape = NULL;
 	return (0);
 }
