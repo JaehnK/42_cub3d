@@ -10,13 +10,13 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/cub3d.h"
+#include "cub3d.h"
 
 int	main(int argc, char **argv)
 {
-	t_file	*f;
+	t_file *f;
 
 	f = NULL;
 	ft_parse_file(argc, argv, &f);
-	ft_exit("GOODBYE\n", 0, &f);
+	ft_exit("NULL\n", 0, &f);
 }

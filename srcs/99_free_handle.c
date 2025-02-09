@@ -47,11 +47,11 @@ void	free_file_struct(t_file **file)
 		free((*file)->f_dir);
 	if ((*file)->c_dir)
 		free((*file)->c_dir);
-	if ((*file)->maplist)
+	if ((*file)->maparr)
 	{
-		while ((*file)->maplist[i])
-			free((*file)->maplist[i++]);
-		free((*file)->maplist);
+		while ((*file)->maparr[i])
+			free((*file)->maparr[i++]);
+		free((*file)->maparr);
 	}
 	free(*file);
 	(*file) = NULL;

@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/cub3d.h"
+#include "cub3d.h"
 
 void	printlist(t_map_list *head)
 {
@@ -65,29 +65,36 @@ t_map_list	*alloc_map_list(int fd)
 				alloc_new_node(idx++, line, &head);
 			line = get_next_line(fd);
 		}
-		head->idx = idx - 1;
 	}
+	head->idx = idx;
 	return (head);
 }
 
 int	convert_list_to_array(t_map_list **node, t_file **f)
 {
 	int			i;
+	int			mapwidth;
 	char		**line;
 	t_map_list	*tmp;
 
 	i = 0;
-	(*f)->maplist = malloc(sizeof(char *) * (*node)->idx);
+	mapwidth = 0;
+	(*f)->maparr = malloc(sizeof(char *) * ((*node)->idx + 1));
 	while (*node)
 	{
 		line = ft_split((*node)->line, '\n');
-		(*f)->maplist[i++] = ft_strdup(line[0]);
+		(*f)->maparr[i++] = ft_strdup(line[0]);
+		if ((int) ft_strlen((*f)->maparr[i - 1]) > mapwidth)
+			mapwidth = ft_strlen((*f)->maparr[i - 1]);
 		ft_split_free(line);
 		free((*node)->line);
 		tmp = (*node);
 		(*node) = (*node)->next;
 		free(tmp);
 	}
+	(*f)->maparr[i] = NULL;
+	(*f)->map_width = mapwidth;
+	(*f)->map_height = i;
 	return (0);
 }
 
@@ -98,7 +105,7 @@ int	ft_parse_map(int fd, t_file **f)
 	node = alloc_map_list(fd);
 	if (!node)
 		ft_exit("Error\n: Failed to Read Map\n", 1, f);
-	printlist(node);
 	convert_list_to_array(&node, f);
+	ft_validate_map(f);
 	return (0);
 }

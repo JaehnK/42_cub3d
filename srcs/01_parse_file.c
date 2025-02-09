@@ -9,7 +9,7 @@
 /*   Updated: 2025/02/04 10:10:11 by jaehukim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-#include "../includes/cub3d.h"
+#include "cub3d.h"
 
 int	validate_file(int ac, char **av, t_file **f)
 {

@@ -28,8 +28,10 @@ OBJS_DIR = ./objs
 
 SRCS =	00_main.c \
 		01_parse_file.c \
-		02_parse_file_utils.c \
-		03_parse_map.c \
+		01-01_parse_file_utils.c \
+		02_parse_map.c \
+		03_validate_map.c \
+		03-01_validate_map_utils.c \
 		99_free_handle.c
 
 
