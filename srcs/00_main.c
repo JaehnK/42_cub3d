@@ -14,9 +14,11 @@
 
 int	main(int argc, char **argv)
 {
-	t_file *f;
+	t_cub *cub;
 
-	f = NULL;
-	ft_parse_file(argc, argv, &f);
-	ft_exit("NULL\n", 0, &f);
+	cub = malloc(sizeof(t_cub));
+	cub->data = malloc(sizeof(t_data));
+	cub->file = NULL;
+	ft_mlx_init(cub->data);
+	ft_parse_file(argc, argv, &(cub->file));
 }

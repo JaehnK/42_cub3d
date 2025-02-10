@@ -11,3 +11,14 @@
 /* ************************************************************************** */
 
 #include "cub3d.h"
+
+void	ft_mlx_init(t_data *data)
+{
+	data->mlx = mlx_init();
+	data->win = mlx_new_window(data->mlx, SCREEN_WIDTH, SCREEN_HEIGHT, "CUB 3D");
+	data->img = mlx_new_image(data->mlx, SCREEN_WIDTH, SCREEN_HEIGHT);
+	data->addr = mlx_get_data_addr(data->img, 
+	 								&(data->bits_per_pixel), 
+									&(data->line_length), 
+									&(data->endian));
+}
