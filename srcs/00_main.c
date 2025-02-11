@@ -21,4 +21,8 @@ int	main(int argc, char **argv)
 	cub->file = NULL;
 	ft_mlx_init(cub->data);
 	ft_parse_file(argc, argv, &(cub->file));
+	cub->file->plane_x = 0;
+	cub->file->plane_y = 0.66;
+	mlx_loop_hook(cub->data->mlx, main_loop, &cub);
+    mlx_loop(cub->data->mlx);
 }

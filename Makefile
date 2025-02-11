@@ -33,6 +33,7 @@ SRCS =	00_main.c \
 		03_validate_map.c \
 		03-01_validate_map_utils.c \
 		10_mlx.c \
+		11_dda.c \
 		99_free_handle.c
 
 

@@ -40,7 +40,11 @@ int	get_pos(char **map, int i, int j, t_file **f)
 	(*f)->pos_x = j;
 	(*f)->pos_y = i;
 	if (map[i][j] == 'E')
+	{
 		(*f)->pos_dir = 1;
+		(*f)->pos_dir_x = -1;
+		(*f)->pos_dir_y = 0;
+	}
 	else if (map[i][j] == 'W')
 		(*f)->pos_dir = 2;
 	else if (map[i][j] == 'S')
