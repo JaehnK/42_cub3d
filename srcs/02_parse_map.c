@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   03_parse_map.c                                     :+:      :+:    :+:   */
+/*   02_parse_map.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jaehukim <jaehukim42@student.42gyeong      +#+  +:+       +#+        */
+/*   By: kjung <kjung@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 16:32:14 by jaehukim          #+#    #+#             */
-/*   Updated: 2025/02/06 16:32:16 by jaehukim         ###   ########.fr       */
+/*   Updated: 2025/02/11 16:10:28 by kjung            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ t_map_list	*alloc_new_node(int idx, char *line, t_map_list **head)
 	while (tmp && tmp->next)
 		tmp = (tmp)->next;
 	(tmp)->next = new;
+	printf("node :%s", new->line);
 	return (new);
 }
 
@@ -55,18 +56,21 @@ t_map_list	*alloc_map_list(int fd)
 	head = NULL;
 	while (line)
 	{
-		if (!line && (line[0] == '1' || line[0] == '0'))
+		if (line[0] != '1' && line[0] != '0')
 			break ;
 		else
 		{
 			if (!head)
-				head = alloc_new_node(idx++, line, NULL);
+				{
+					head = alloc_new_node(idx++, line, NULL);				
+				}
 			else
 				alloc_new_node(idx++, line, &head);
 			line = get_next_line(fd);
 		}
+		head->idx = idx;
 	}
-	head->idx = idx;
+	
 	return (head);
 }
 

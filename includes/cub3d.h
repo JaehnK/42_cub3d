@@ -27,23 +27,23 @@ typedef	struct	s_map_list
 
 typedef	struct	s_file
 {
-	char	*filename;
-	char	*no_dir;
-	char	*so_dir;
-	char	*we_dir;
-	char	*ea_dir;
-	char	*f_dir;
-	char	*c_dir;
-	char	**maparr;
-	int		map_width;
-	int		map_height;
-	double	pos_x;
-	double	pos_y;
-	int		pos_dir;
-	int		pos_dir_x; // E:1 W:2 S:3 N:4
-	int		pos_dir_y;
-	double	plane_x;
-	double	plane_y;
+	char	*filename; // 파일이름
+	char	*no_dir;	// 경로 북쪽
+	char	*so_dir;	// 경로 남
+	char	*we_dir;	//	경로 서
+	char	*ea_dir;	// 경로 동
+	char	*f_dir;	//	바닥색
+	char	*c_dir;	//	천장 색
+	char	**maparr;	//	 맵 배열
+	int		map_width;	// 맵 가로
+	int		map_height;	// 맵 세로
+	double	pos_x;	// 캐릭 위치
+	double	pos_y;	// 캐릭 위치
+	int		pos_dir;	// 캐릭 방향 // E:1 W:2 S:3 N:4
+	int		pos_dir_x; 	// 캐릭 시야
+	int		pos_dir_y;	// 캐릭 시야	
+	double	plane_x;	//	 카메라 시점
+	double	plane_y;	// 카메라 시점
 }	t_file;
 
 typedef	struct s_img
@@ -59,7 +59,7 @@ typedef struct t_data
 {
 	void	*mlx;
 	void	*win;
-	t_img	*img;
+	t_img	img;
 }	t_data;
 
 typedef struct s_cub
@@ -82,7 +82,7 @@ void	ft_mlx_init(t_data *data);
 void    my_mlx_pixel_put(t_data *data, int x, int y, int color);
 int     key_press(int keycode, t_cub *cub);
 
-int     main_loop(t_cub *cub);
+int     main_loop(t_cub **cub);
 
 
 void	ft_split_free(char **arr);
