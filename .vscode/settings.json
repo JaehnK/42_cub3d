@@ -4,6 +4,8 @@
 		"mlx.h": "c",
 		"errno.h": "c",
 		"map": "c",
-		"format": "c"
+		"format": "c",
+		"stdlib.h": "c",
+		"key_linux.h": "c"
 	}
 }
