@@ -21,7 +21,6 @@ void	print_file(char **f)
 
 }
 
-
 int	main(int argc, char **argv)
 {
 	t_cub *cub;
@@ -32,6 +31,7 @@ int	main(int argc, char **argv)
 	ft_mlx_init(cub->data);
 	ft_parse_file(argc, argv, &(cub->file));
 	print_file(cub->file->maparr);
+	cub->data->buf = 0;
 	cub->file->plane_x = 0;
 	cub->file->plane_y = 0.66;
 	mlx_loop_hook(cub->data->mlx, main_loop, &cub);

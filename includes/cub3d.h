@@ -9,12 +9,14 @@
 # include "../libft/libft.h"
 # include "../minilibx-linux/mlx.h"
 
-# define SCREEN_WIDTH 768
-# define SCREEN_HEIGHT 1024
 # define PLANE_X 0
 # define PLANE_Y 0.66
-#define MOVE_SPEED 0.05
-#define ROT_SPEED 0.05
+# define MOVE_SPEED 0.05
+# define ROT_SPEED 0.05
+# define SCREEN_W 1280
+# define SCREEN_H 720
+# define TEX_W 64
+# define TEX_H 64
 
 typedef	struct	s_map_list t_map_list;
 
@@ -42,8 +44,7 @@ typedef	struct	s_file
 	int		pos_dir;	// 캐릭 방향 // E:1 W:2 S:3 N:4
 	int		pos_dir_x; 	// 캐릭 시야
 	int		pos_dir_y;	// 캐릭 시야	
-	double	plane_x;	//	 카메라 시점
-	double	plane_y;	// 카메라 시점
+	int		texture[8][TEX_H * TEX_W];
 }	t_file;
 
 typedef	struct s_img
@@ -57,6 +58,8 @@ typedef	struct s_img
 
 typedef struct t_data
 {
+	int		buf_flag;
+	int		**buf;
 	void	*mlx;
 	void	*win;
 	t_img	img;
