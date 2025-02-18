@@ -61,16 +61,13 @@ t_map_list	*alloc_map_list(int fd)
 		else
 		{
 			if (!head)
-				{
-					head = alloc_new_node(idx++, line, NULL);				
-				}
+				head = alloc_new_node(idx++, line, NULL);
 			else
 				alloc_new_node(idx++, line, &head);
 			line = get_next_line(fd);
 		}
 		head->idx = idx;
 	}
-	
 	return (head);
 }
 

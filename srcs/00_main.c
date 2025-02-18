@@ -14,16 +14,20 @@
 
 void	print_file(char **f)
 {
-	for (int i = 0; f[i]; i++)
-	{
-		printf("%s:%d\n", f[i], i);
-	}
+	int	i;
 
+	i = 0;
+	while (f[i])
+	{
+		printf("%s: %d\n", f[i], i);
+		i++;
+	}
 }
 
 int	main(int argc, char **argv)
 {
-	t_cub *cub;
+	t_cub	*cub;
+	int		i;
 
 	cub = malloc(sizeof(t_cub));
 	cub->data = malloc(sizeof(t_data));
@@ -34,11 +38,10 @@ int	main(int argc, char **argv)
 	print_file(cub->file->maparr);
 	cub->data->buf_flag = 0;
 	cub->data->buf = malloc(sizeof(int *) * (SCREEN_H + 1));
-	int i = 0;
+	i = 0;
 	while (i < SCREEN_H)
 		cub->data->buf[i++] = malloc(sizeof(int) * SCREEN_W);
 	cub->data->buf[i] = NULL;
-
 	mlx_loop_hook(cub->data->mlx, main_loop, &cub);
-    mlx_loop(cub->data->mlx);
+	mlx_loop(cub->data->mlx);
 }

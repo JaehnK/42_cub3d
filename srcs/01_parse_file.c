@@ -38,7 +38,7 @@ char	*clean_newline(char *line)
 {
 	char	**tmp;
 	char	*ret;
-	
+
 	tmp = ft_split(line, '\n');
 	ret = ft_strdup(tmp[0]);
 	ft_split_free(tmp);

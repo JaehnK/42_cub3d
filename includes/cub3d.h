@@ -44,7 +44,6 @@ typedef	struct	s_file
 	int		pos_dir;	// 캐릭 방향 // E:1 W:2 S:3 N:4
 	int		pos_dir_x; 	// 캐릭 시야
 	int		pos_dir_y;	// 캐릭 시야	
-	int		texture[8][TEX_H * TEX_W];
 }	t_file;
 
 typedef	struct s_img

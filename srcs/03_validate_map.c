@@ -94,6 +94,6 @@ int	ft_validate_map(t_file **f)
 	if (map_check((*f)->maparr, (*f)->map_width, (*f)->map_height, f))
 		ft_exit("Invalid Map\n", 1, f);
 	else
-		printf("Success");
+		printf("Success\n");
 	return (0);
 }
