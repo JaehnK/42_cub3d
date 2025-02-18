@@ -77,7 +77,6 @@ void	ft_init_ray(int x, t_ray *ry, t_cub *cb)
 	ry->sidedist_y = fabs(1 / ry->raydir_y);
 	ry->hit = 0;
 	raycast_getdir(ry, cb);
-
 }
 
 void	clean_buf(t_cub *cb)
@@ -110,15 +109,13 @@ void	dda(t_ray *ry, t_cub *cb)
 void	draw_on_buf(int x, t_ray *ry, t_cub *cb)
 {
 	int	y;
-	int	tex_y;
-	int	colour;
 
 	y = ry->draw_start;
 	while (y < ry->draw_end)
 	{
 		ry->tex_y = (int) ry->tex_pos & (TEX_H - 1);
 		ry->tex_pos += ry->step;
-		ry->colour = cb->file->texture[ry->tex_num][TEX_H * tex_y + ry->tex_x];
+		ry->colour = cb->file->texture[ry->tex_num][TEX_H * ry->tex_y + ry->tex_x];
 		if (ry->side == 1)
 			ry->colour = (ry->colour >> 1) & 8355711;
 		cb->data->buf[y][x] = ry->colour;
@@ -140,12 +137,21 @@ void	render_walls(t_ray *ry, t_cub *cb)
 	ry->draw_end = ry->line_height / 2 + SCREEN_H / 2;
 	if (ry->draw_end >= SCREEN_H)
 		ry->draw_end = SCREEN_H - 1;
-	ry->tex_num = ft_atoi(cb->file->maparr[ry->map_x][ry->map_y]);
 	ry->tex_x = (int) (ry->wall_x * (double) TEX_W);
-	if (ry->side == 0 && ry->raydir_x > 0)
-		ry->tex_x = TEX_W - ry->tex_x - 1;
-	if (ry->side == 1 && ry->raydir_y < 0)
-		ry->tex_x = TEX_W - ry->tex_x - 1;
+	if (ry->side == 0) // x축에 수직인 벽 (동쪽 또는 서쪽)
+    {
+        if (ry->raydir_x > 0)
+            ry->tex_num = 0;  // 서쪽 벽 텍스처
+        else
+            ry->tex_num = 1;  // 동쪽 벽 텍스처
+    }
+    else  // y축에 수직인 벽 (북쪽 또는 남쪽)
+    {
+        if (ry->raydir_y > 0)
+            ry->tex_num = 2;  // 북쪽 벽 텍스처
+        else
+            ry->tex_num = 3;  // 남쪽 벽 텍스처
+    }
 	ry->step = 1.0 * TEX_H / ry->line_height;
 	ry->tex_pos = (ry->draw_start - SCREEN_H / 2 + ry->line_height) * ry->step;
 }
@@ -168,27 +174,33 @@ void	raycast(t_cub *cb)
 		draw_on_buf(x, ry, cb);
 		x++;	
 	}
-
 }
 
-//void	draw(t_cub *cub)
-//{
-//	int x;
-//	int	y;
+void	draw(t_cub *cub)
+{
+	int x;
+	int	y;
 
-//	while (y < SCREEN_H)
-//	{
-//		while (x < SCREEN_W)
-//		{
-//			cub->data->img.
-//		}
-//	}
-//	mlx_put_image_to_window(info->mlx, info->win, info->img.img, 0, 0);
-//}
+	x = 0;
+	y = 0;
+	while (y < SCREEN_H)
+	{
+		x = 0;
+		while (x < SCREEN_W)
+		{
+			printf("x: %d y: %d buf: %d\n", x, y, cub->data->buf[y][x]);
+			cub->data->img.data[y * SCREEN_W + x] = cub->data->buf[y][x];
+			x++;
+		}
+		y++;
+	}
+	mlx_put_image_to_window(cub->data->mlx, cub->data->win, cub->data->img.img, 0, 0);
+}
 
 int     main_loop(t_cub **cub)
 {
-    mlx_hook((*cub)->data->win, 2, 1L<<0, key_press, *cub);
+    //mlx_hook((*cub)->data->win, 2, 1L<<0, key_press, *cub);
     raycast(*cub);
+	draw(*cub);
     return (0);
 }

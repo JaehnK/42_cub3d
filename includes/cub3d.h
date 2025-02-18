@@ -50,14 +50,21 @@ typedef	struct	s_file
 typedef	struct s_img
 {
 	void	*img;
+	int		*data;
 	char	*addr;
+	int 	size_l;
 	int		bits_per_pixel;
 	int		line_length;
+	int		img_width;
+	int		img_height;
 	int		endian;
 }	t_img;
 
 typedef struct t_data
 {
+	int		**textures;
+	int		ceiling_clr;
+	int		floor_clr;
 	int		buf_flag;
 	int		**buf;
 	void	*mlx;
@@ -80,6 +87,9 @@ int	ft_validate_map(t_file **f);
 int	check_frontier(char **map, int i, int width);
 int	check_inside_zero(char **map, int i, int j);
 int	get_pos(char **map, int i, int j, t_file **f);
+
+void	ft_read_cub_value(t_file **f, t_cub **cb);
+
 
 void	ft_mlx_init(t_data *data);
 void    my_mlx_pixel_put(t_data *data, int x, int y, int color);

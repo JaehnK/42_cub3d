@@ -31,6 +31,7 @@ SRCS =	00_main.c \
 		01-01_parse_file_utils.c \
 		02_parse_map.c \
 		03_validate_map.c \
+		04_read_cub_value.c \
 		03-01_validate_map_utils.c \
 		10_mlx.c \
 		11_dda.c \

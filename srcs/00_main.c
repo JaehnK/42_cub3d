@@ -30,10 +30,15 @@ int	main(int argc, char **argv)
 	cub->file = NULL;
 	ft_mlx_init(cub->data);
 	ft_parse_file(argc, argv, &(cub->file));
+	ft_read_cub_value(&(cub->file), &cub);
 	print_file(cub->file->maparr);
-	cub->data->buf = 0;
-	cub->file->plane_x = 0;
-	cub->file->plane_y = 0.66;
+	cub->data->buf_flag = 0;
+	cub->data->buf = malloc(sizeof(int *) * (SCREEN_H + 1));
+	int i = 0;
+	while (i < SCREEN_H)
+		cub->data->buf[i++] = malloc(sizeof(int) * SCREEN_W);
+	cub->data->buf[i] = NULL;
+
 	mlx_loop_hook(cub->data->mlx, main_loop, &cub);
     mlx_loop(cub->data->mlx);
 }
