@@ -6,7 +6,7 @@
 /*   By: kjung <kjung@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/09 19:49:59 by jaehukim          #+#    #+#             */
-/*   Updated: 2025/02/11 14:30:59 by kjung            ###   ########.fr       */
+/*   Updated: 2025/02/17 17:40:00 by kjung            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,56 +23,63 @@ void	ft_mlx_init(t_data *data)
 									&(data->img.endian));
 }
 
-void    my_mlx_pixel_put(t_data *data, int x, int y, int color)
+void my_mlx_pixel_put(t_data *data, int x, int y, int color)
 {
-    char    *dst;
+    char *dst;
+
+    // 범위 체크 추가
+    if (x < 0 || x >= SCREEN_WIDTH || y < 0 || y >= SCREEN_HEIGHT)
+    {
+        printf("Pixel out of bounds: x=%d, y=%d\n", x, y);
+        return;
+    }
 
     dst = data->img.addr + (y * data->img.line_length + x * (data->img.bits_per_pixel / 8));
     *(unsigned int*)dst = color;
 }
 
-int     key_press(int keycode, t_cub *cub)
-{
-    if (keycode == 53)  // ESC key
-    {
-        mlx_destroy_window(cub->data->mlx, cub->data->win);
-        exit(0);
-    }
-    if (keycode == 13)  // W key
-    {
-        double newX = cub->file->pos_x + cub->file->pos_dir_x * MOVE_SPEED;
-        double newY = cub->file->pos_y + cub->file->pos_dir_y * MOVE_SPEED;
-        if (cub->file->maparr[(int)newX][(int)cub->file->pos_y] == 0)
-            cub->file->pos_x = newX;
-        if (cub->file->maparr[(int)cub->file->pos_x][(int)newY] == 0)
-            cub->file->pos_y = newY;
-    }
-    if (keycode == 1)   // S key
-    {
-        double newX = cub->file->pos_x - cub->file->pos_dir_x * MOVE_SPEED;
-        double newY = cub->file->pos_y - cub->file->pos_dir_y * MOVE_SPEED;
-        if (cub->file->maparr[(int)newX][(int)cub->file->pos_y] == 0)
-            cub->file->pos_x = newX;
-        if (cub->file->maparr[(int)cub->file->pos_x][(int)newY] == 0)
-            cub->file->pos_y = newY;
-    }
-    if (keycode == 2)   // D key
-    {
-        double oldDirX = cub->file->pos_dir_x;
-        cub->file->pos_dir_x = cub->file->pos_dir_x * cos(-ROT_SPEED) - cub->file->pos_dir_y * sin(-ROT_SPEED);
-        cub->file->pos_dir_y = oldDirX * sin(-ROT_SPEED) + cub->file->pos_dir_y * cos(-ROT_SPEED);
-        double oldPlaneX = cub->file->plane_x;
-        cub->file->plane_x = cub->file->plane_x * cos(-ROT_SPEED) - cub->file->plane_y * sin(-ROT_SPEED);
-        cub->file->plane_y = oldPlaneX * sin(-ROT_SPEED) + cub->file->plane_y * cos(-ROT_SPEED);
-    }
-    if (keycode == 0)   // A key
-    {
-        double oldDirX = cub->file->pos_dir_x;
-        cub->file->pos_dir_x = cub->file->pos_dir_x * cos(ROT_SPEED) - cub->file->pos_dir_y * sin(ROT_SPEED);
-        cub->file->pos_dir_y = oldDirX * sin(ROT_SPEED) + cub->file->pos_dir_y * cos(ROT_SPEED);
-        double oldPlaneX = cub->file->plane_x;
-        cub->file->plane_x = cub->file->plane_x * cos(ROT_SPEED) - cub->file->plane_y * sin(ROT_SPEED);
-        cub->file->plane_y = oldPlaneX * sin(ROT_SPEED) + cub->file->plane_y * cos(ROT_SPEED);
-    }
-    return (0);
-}
+// int     key_press(int keycode, t_cub *cub)
+// {
+//     if (keycode == 53)  // ESC key
+//     {
+//         mlx_destroy_window(cub->data->mlx, cub->data->win);
+//         exit(0);
+//     }
+//     if (keycode == 13)  // W key
+//     {
+//         double newX = cub->file->pos_x + cub->file->pos_dir_x * MOVE_SPEED;
+//         double newY = cub->file->pos_y + cub->file->pos_dir_y * MOVE_SPEED;
+//         if (cub->file->maparr[(int)newX][(int)cub->file->pos_y] == 0)
+//             cub->file->pos_x = newX;
+//         if (cub->file->maparr[(int)cub->file->pos_x][(int)newY] == 0)
+//             cub->file->pos_y = newY;
+//     }
+//     if (keycode == 1)   // S key
+//     {
+//         double newX = cub->file->pos_x - cub->file->pos_dir_x * MOVE_SPEED;
+//         double newY = cub->file->pos_y - cub->file->pos_dir_y * MOVE_SPEED;
+//         if (cub->file->maparr[(int)newX][(int)cub->file->pos_y] == 0)
+//             cub->file->pos_x = newX;
+//         if (cub->file->maparr[(int)cub->file->pos_x][(int)newY] == 0)
+//             cub->file->pos_y = newY;
+//     }
+//     if (keycode == 2)   // D key
+//     {
+//         double oldDirX = cub->file->pos_dir_x;
+//         cub->file->pos_dir_x = cub->file->pos_dir_x * cos(-ROT_SPEED) - cub->file->pos_dir_y * sin(-ROT_SPEED);
+//         cub->file->pos_dir_y = oldDirX * sin(-ROT_SPEED) + cub->file->pos_dir_y * cos(-ROT_SPEED);
+//         double oldPlaneX = cub->file->plane_x;
+//         cub->file->plane_x = cub->file->plane_x * cos(-ROT_SPEED) - cub->file->plane_y * sin(-ROT_SPEED);
+//         cub->file->plane_y = oldPlaneX * sin(-ROT_SPEED) + cub->file->plane_y * cos(-ROT_SPEED);
+//     }
+//     if (keycode == 0)   // A key
+//     {
+//         double oldDirX = cub->file->pos_dir_x;
+//         cub->file->pos_dir_x = cub->file->pos_dir_x * cos(ROT_SPEED) - cub->file->pos_dir_y * sin(ROT_SPEED);
+//         cub->file->pos_dir_y = oldDirX * sin(ROT_SPEED) + cub->file->pos_dir_y * cos(ROT_SPEED);
+//         double oldPlaneX = cub->file->plane_x;
+//         cub->file->plane_x = cub->file->plane_x * cos(ROT_SPEED) - cub->file->plane_y * sin(ROT_SPEED);
+//         cub->file->plane_y = oldPlaneX * sin(ROT_SPEED) + cub->file->plane_y * cos(ROT_SPEED);
+//     }
+//     return (0);
+// }

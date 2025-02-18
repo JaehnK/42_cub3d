@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   01_fileparse.c                                     :+:      :+:    :+:   */
+/*   01_parse_file.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jaehukim <jaehukim42@student.42gyeong      +#+  +:+       +#+        */
+/*   By: kjung <kjung@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 10:10:09 by jaehukim          #+#    #+#             */
-/*   Updated: 2025/02/04 10:10:11 by jaehukim         ###   ########.fr       */
+/*   Updated: 2025/02/18 16:28:21 by kjung            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "cub3d.h"
@@ -34,6 +34,17 @@ int	validate_file(int ac, char **av, t_file **f)
 	return (0);
 }
 
+char	*clean_newline(char *line)
+{
+	char	**tmp;
+	char	*ret;
+
+	tmp = ft_split(line, '\n');
+	ret = ft_strdup(tmp[0]);
+	ft_split_free(tmp);
+	return (ret);
+}
+
 int	assign_dir(char *line, t_file **f)
 {
 	int		flag;
@@ -42,17 +53,17 @@ int	assign_dir(char *line, t_file **f)
 	flag = 0;
 	contents = ft_split(line, ' ');
 	if (!ft_strncmp(contents[0], "NO", 2))
-		(*f)->no_dir = ft_strdup(contents[1]);
+		(*f)->no_dir = clean_newline(contents[1]);
 	else if (!ft_strncmp(contents[0], "SO", 2))
-		(*f)->so_dir = ft_strdup(contents[1]);
+		(*f)->so_dir = clean_newline(contents[1]);
 	else if (!ft_strncmp(contents[0], "WE", 2))
-		(*f)->we_dir = ft_strdup(contents[1]);
+		(*f)->we_dir = clean_newline(contents[1]);
 	else if (!ft_strncmp(contents[0], "EA", 2))
-		(*f)->ea_dir = ft_strdup(contents[1]);
+		(*f)->ea_dir = clean_newline(contents[1]);
 	else if (!ft_strncmp(contents[0], "F", 1))
-		(*f)->f_dir = ft_strdup(contents[1]);
+		(*f)->f_dir = clean_newline(contents[1]);
 	else if (!ft_strncmp(contents[0], "C", 1))
-		(*f)->c_dir = ft_strdup(contents[1]);
+		(*f)->c_dir = clean_newline(contents[1]);
 	else
 		flag = 1;
 	ft_split_free(contents);

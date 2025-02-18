@@ -6,7 +6,7 @@
 /*   By: kjung <kjung@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/09 19:30:16 by jaehukim          #+#    #+#             */
-/*   Updated: 2025/02/11 17:58:51 by kjung            ###   ########.fr       */
+/*   Updated: 2025/02/18 16:14:56 by kjung            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,8 +60,8 @@ int	check_inside_zero(char **map, int i, int j)
 
 int get_pos(char **map, int i, int j, t_file **f)
 {
-    (*f)->pos_x = i;
-    (*f)->pos_y = j;
+    (*f)->pos_x = j;    // j가 x좌표
+    (*f)->pos_y = i;    // i가 y좌표
 
     if (map[i][j] == 'E')
     {
