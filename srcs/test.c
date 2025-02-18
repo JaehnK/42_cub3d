@@ -6,7 +6,7 @@
 /*   By: kjung <kjung@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 16:13:32 by kjung             #+#    #+#             */
-/*   Updated: 2025/02/18 16:16:46 by kjung            ###   ########.fr       */
+/*   Updated: 2025/02/18 16:53:21 by kjung            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,9 +63,9 @@ void calc(t_cub *cub)
    if (first_calc)
    {
        printf("\n===== First Calc Call =====\n");
-       printf("Player position: (%f, %f)\n", cub->ray.posX, cub->ray.posY);
-       printf("Direction: (%f, %f)\n", cub->ray.dirX, cub->ray.dirY);
-       printf("Camera plane: (%f, %f)\n", cub->ray.planeX, cub->ray.planeY);
+       printf("Player position: (%f, %f)\n", cub->ray.pos_x, cub->ray.pos_y);
+       printf("Direction: (%f, %f)\n", cub->ray.dir_x, cub->ray.dir_y);
+       printf("Camera plane: (%f, %f)\n", cub->ray.plane_x, cub->ray.plane_y);
        printf("Map dimensions: %d x %d\n", cub->ray.map_width, cub->ray.map_height);
        first_calc = 0;
    }
@@ -73,29 +73,29 @@ void calc(t_cub *cub)
    for(int x = 0; x < SCREEN_WIDTH; x++)
    {
        double cameraX = 2 * x / (double)SCREEN_WIDTH - 1;
-       double rayDirX = cub->ray.dirX + cub->ray.planeX * cameraX;
-       double rayDirY = cub->ray.dirY + cub->ray.planeY * cameraX;
+       double raydir_x = cub->ray.dir_x + cub->ray.plane_x * cameraX;
+       double rayDirY = cub->ray.dir_y + cub->ray.plane_y * cameraX;
 
-       int mapX = (int)cub->ray.posX;
-       int mapY = (int)cub->ray.posY;
+       int mapX = (int)cub->ray.pos_x;
+       int mapY = (int)cub->ray.pos_y;
 
-       double deltaDistX = (rayDirX == 0) ? 1e30 : fabs(1 / rayDirX);
+       double deltaDistX = (raydir_x == 0) ? 1e30 : fabs(1 / raydir_x);
        double deltaDistY = (rayDirY == 0) ? 1e30 : fabs(1 / rayDirY);
 
        double sideDistX;
        double sideDistY;
        
-       int stepX = (rayDirX < 0) ? -1 : 1;
+       int stepX = (raydir_x < 0) ? -1 : 1;
        int stepY = (rayDirY < 0) ? -1 : 1;
 
-       if (rayDirX < 0)
-           sideDistX = (cub->ray.posX - mapX) * deltaDistX;
+       if (raydir_x < 0)
+           sideDistX = (cub->ray.pos_x - mapX) * deltaDistX;
        else
-           sideDistX = (mapX + 1.0 - cub->ray.posX) * deltaDistX;
+           sideDistX = (mapX + 1.0 - cub->ray.pos_x) * deltaDistX;
        if (rayDirY < 0)
-           sideDistY = (cub->ray.posY - mapY) * deltaDistY;
+           sideDistY = (cub->ray.pos_y - mapY) * deltaDistY;
        else
-           sideDistY = (mapY + 1.0 - cub->ray.posY) * deltaDistY;
+           sideDistY = (mapY + 1.0 - cub->ray.pos_y) * deltaDistY;
 
        int hit = 0;
        int side = 0;
@@ -133,9 +133,9 @@ void calc(t_cub *cub)
 
        double perpWallDist;
        if (side == 0)
-           perpWallDist = (mapX - cub->ray.posX + (1 - stepX) / 2) / rayDirX;
+           perpWallDist = (mapX - cub->ray.pos_x + (1 - stepX) / 2) / raydir_x;
        else
-           perpWallDist = (mapY - cub->ray.posY + (1 - stepY) / 2) / rayDirY;
+           perpWallDist = (mapY - cub->ray.pos_y + (1 - stepY) / 2) / rayDirY;
 
        int lineHeight = (int)(SCREEN_HEIGHT / perpWallDist);
 
@@ -147,19 +147,19 @@ void calc(t_cub *cub)
        // 텍스처 계산
        double wallX;
        if (side == 0)
-           wallX = cub->ray.posY + perpWallDist * rayDirY;
+           wallX = cub->ray.pos_y + perpWallDist * rayDirY;
        else
-           wallX = cub->ray.posX + perpWallDist * rayDirX;
+           wallX = cub->ray.pos_x + perpWallDist * raydir_x;
        wallX -= floor(wallX);
 
        int texX = (int)(wallX * (double)texWidth);
-       if (side == 0 && rayDirX > 0) texX = texWidth - texX - 1;
+       if (side == 0 && raydir_x > 0) texX = texWidth - texX - 1;
        if (side == 1 && rayDirY < 0) texX = texWidth - texX - 1;
 
        // 텍스처 적용
        int texNum;
        if (side == 0)
-           texNum = (rayDirX > 0) ? 0 : 1;  // east/west
+           texNum = (raydir_x > 0) ? 0 : 1;  // east/west
        else
            texNum = (rayDirY > 0) ? 2 : 3;  // south/north
 
@@ -187,6 +187,7 @@ void calc(t_cub *cub)
            cub->ray.buf[y][x] = 0x888888;
    }
 }
+
 int main_loop(t_cub **cub)
 {
     static int frame_count = 0;
@@ -204,65 +205,65 @@ int main_loop(t_cub **cub)
     return (0);
 }
 
-int key_press(int key, t_cub *cub)
-{
-    // W키 (앞으로)
-    if (key == 119)
-    {
-        int newX = (int)(cub->ray.posX + cub->ray.dirX * cub->ray.moveSpeed);
-        int newY = (int)(cub->ray.posY + cub->ray.dirY * cub->ray.moveSpeed);
+// int key_press(int key, t_cub *cub)
+// {
+//     // W키 (앞으로)
+//     if (key == 119)
+//     {
+//         int newX = (int)(cub->ray.pos_x + cub->ray.dir_x * cub->ray.move_speed);
+//         int newY = (int)(cub->ray.pos_y + cub->ray.dir_y * cub->ray.move_speed);
         
-        // 맵 경계 체크 수정 (x,y 순서 변경)
-        if (newX >= 0 && newX < cub->ray.map_width && 
-            (int)cub->ray.posY >= 0 && (int)cub->ray.posY < cub->ray.map_height &&
-            !cub->ray.world_map[(int)cub->ray.posY][newX])  // 순서 변경
-            cub->ray.posX += cub->ray.dirX * cub->ray.moveSpeed;
+//         // 맵 경계 체크 수정 (x,y 순서 변경)
+//         if (newX >= 0 && newX < cub->ray.map_width && 
+//             (int)cub->ray.pos_y >= 0 && (int)cub->ray.pos_y < cub->ray.map_height &&
+//             !cub->ray.world_map[(int)cub->ray.pos_y][newX])  // 순서 변경
+//             cub->ray.pos_x += cub->ray.dir_x * cub->ray.move_speed;
             
-        if ((int)cub->ray.posX >= 0 && (int)cub->ray.posX < cub->ray.map_width && 
-            newY >= 0 && newY < cub->ray.map_height &&
-            !cub->ray.world_map[newY][(int)cub->ray.posX])  // 순서 변경
-            cub->ray.posY += cub->ray.dirY * cub->ray.moveSpeed;
-    }
-    // S키 (뒤로) - 같은 방식으로 수정
-    if (key == 115)
-    {
-        int newX = (int)(cub->ray.posX - cub->ray.dirX * cub->ray.moveSpeed);
-        int newY = (int)(cub->ray.posY - cub->ray.dirY * cub->ray.moveSpeed);
+//         if ((int)cub->ray.pos_x >= 0 && (int)cub->ray.pos_x < cub->ray.map_width && 
+//             newY >= 0 && newY < cub->ray.map_height &&
+//             !cub->ray.world_map[newY][(int)cub->ray.pos_x])  // 순서 변경
+//             cub->ray.pos_y += cub->ray.dir_y * cub->ray.move_speed;
+//     }
+//     // S키 (뒤로) - 같은 방식으로 수정
+//     if (key == 115)
+//     {
+//         int newX = (int)(cub->ray.pos_x - cub->ray.dir_x * cub->ray.move_speed);
+//         int newY = (int)(cub->ray.pos_y - cub->ray.dir_y * cub->ray.move_speed);
         
-        if (newX >= 0 && newX < cub->ray.map_width && 
-            (int)cub->ray.posY >= 0 && (int)cub->ray.posY < cub->ray.map_height &&
-            !cub->ray.world_map[(int)cub->ray.posY][newX])
-            cub->ray.posX -= cub->ray.dirX * cub->ray.moveSpeed;
+//         if (newX >= 0 && newX < cub->ray.map_width && 
+//             (int)cub->ray.pos_y >= 0 && (int)cub->ray.pos_y < cub->ray.map_height &&
+//             !cub->ray.world_map[(int)cub->ray.pos_y][newX])
+//             cub->ray.pos_x -= cub->ray.dir_x * cub->ray.move_speed;
             
-        if ((int)cub->ray.posX >= 0 && (int)cub->ray.posX < cub->ray.map_width && 
-            newY >= 0 && newY < cub->ray.map_height &&
-            !cub->ray.world_map[newY][(int)cub->ray.posX])
-            cub->ray.posY -= cub->ray.dirY * cub->ray.moveSpeed;
-    }
-    // 회전 방향 수정 (A키 - 왼쪽)
-    if (key == 97)  // A키
-    {
-        double oldDirX = cub->ray.dirX;
-        cub->ray.dirX = cub->ray.dirX * cos(-cub->ray.rotSpeed) - cub->ray.dirY * sin(-cub->ray.rotSpeed);
-        cub->ray.dirY = oldDirX * sin(-cub->ray.rotSpeed) + cub->ray.dirY * cos(-cub->ray.rotSpeed);
-        double oldPlaneX = cub->ray.planeX;
-        cub->ray.planeX = cub->ray.planeX * cos(-cub->ray.rotSpeed) - cub->ray.planeY * sin(-cub->ray.rotSpeed);
-        cub->ray.planeY = oldPlaneX * sin(-cub->ray.rotSpeed) + cub->ray.planeY * cos(-cub->ray.rotSpeed);
-    }
-    // D키 - 오른쪽
-    if (key == 100)
-    {
-        double oldDirX = cub->ray.dirX;
-        cub->ray.dirX = cub->ray.dirX * cos(cub->ray.rotSpeed) - cub->ray.dirY * sin(cub->ray.rotSpeed);
-        cub->ray.dirY = oldDirX * sin(cub->ray.rotSpeed) + cub->ray.dirY * cos(cub->ray.rotSpeed);
-        double oldPlaneX = cub->ray.planeX;
-        cub->ray.planeX = cub->ray.planeX * cos(cub->ray.rotSpeed) - cub->ray.planeY * sin(cub->ray.rotSpeed);
-        cub->ray.planeY = oldPlaneX * sin(cub->ray.rotSpeed) + cub->ray.planeY * cos(cub->ray.rotSpeed);
-    }
-    if (key == 65307)
-        exit(0);
-    return (0);
-}
+//         if ((int)cub->ray.pos_x >= 0 && (int)cub->ray.pos_x < cub->ray.map_width && 
+//             newY >= 0 && newY < cub->ray.map_height &&
+//             !cub->ray.world_map[newY][(int)cub->ray.pos_x])
+//             cub->ray.pos_y -= cub->ray.dir_y * cub->ray.move_speed;
+//     }
+//     // 회전 방향 수정 (A키 - 왼쪽)
+//     if (key == 97)  // A키
+//     {
+//         double olddir_x = cub->ray.dir_x;
+//         cub->ray.dir_x = cub->ray.dir_x * cos(-cub->ray.rot_speed) - cub->ray.dir_y * sin(-cub->ray.rot_speed);
+//         cub->ray.dir_y = olddir_x * sin(-cub->ray.rot_speed) + cub->ray.dir_y * cos(-cub->ray.rot_speed);
+//         double oldPlaneX = cub->ray.plane_x;
+//         cub->ray.plane_x = cub->ray.plane_x * cos(-cub->ray.rot_speed) - cub->ray.plane_y * sin(-cub->ray.rot_speed);
+//         cub->ray.plane_y = oldPlaneX * sin(-cub->ray.rot_speed) + cub->ray.plane_y * cos(-cub->ray.rot_speed);
+//     }
+//     // D키 - 오른쪽
+//     if (key == 100)
+//     {
+//         double olddir_x = cub->ray.dir_x;
+//         cub->ray.dir_x = cub->ray.dir_x * cos(cub->ray.rot_speed) - cub->ray.dir_y * sin(cub->ray.rot_speed);
+//         cub->ray.dir_y = olddir_x * sin(cub->ray.rot_speed) + cub->ray.dir_y * cos(cub->ray.rot_speed);
+//         double oldPlaneX = cub->ray.plane_x;
+//         cub->ray.plane_x = cub->ray.plane_x * cos(cub->ray.rot_speed) - cub->ray.plane_y * sin(cub->ray.rot_speed);
+//         cub->ray.plane_y = oldPlaneX * sin(cub->ray.rot_speed) + cub->ray.plane_y * cos(cub->ray.rot_speed);
+//     }
+//     if (key == 65307)
+//         exit(0);
+//     return (0);
+// }
 
 // void load_texture(t_cub *cub)
 // {
@@ -401,38 +402,38 @@ int init_ray_info(t_cub *cub)
         return (0);
     }
     
-    cub->ray.posX = cub->file->pos_x;
-    cub->ray.posY = cub->file->pos_y;
+    cub->ray.pos_x = cub->file->pos_x;
+    cub->ray.pos_y = cub->file->pos_y;
 	memset(cub->ray.buf, 0, sizeof(cub->ray.buf));
     printf("Player direction: %c\n", cub->file->pos_dir);
     // 방향 초기화
     if (cub->file->pos_dir == '4')  // North
     {
-        cub->ray.dirX = 0.0;
-        cub->ray.dirY = -1.0;
-        cub->ray.planeX = 0.66;
-        cub->ray.planeY = 0.0;
+        cub->ray.dir_x = 0.0;
+        cub->ray.dir_y = -1.0;
+        cub->ray.plane_x = 0.66;
+        cub->ray.plane_y = 0.0;
     }
     else if (cub->file->pos_dir == '3')  // South 
     {
-        cub->ray.dirX = 0.0;
-        cub->ray.dirY = 1.0;
-        cub->ray.planeX = -0.66;
-        cub->ray.planeY = 0.0;
+        cub->ray.dir_x = 0.0;
+        cub->ray.dir_y = 1.0;
+        cub->ray.plane_x = -0.66;
+        cub->ray.plane_y = 0.0;
     }
     else if (cub->file->pos_dir == '1')  // East
     {
-        cub->ray.dirX = 1.0;
-        cub->ray.dirY = 0.0;
-        cub->ray.planeX = 0.0;
-        cub->ray.planeY = 0.66;
+        cub->ray.dir_x = 1.0;
+        cub->ray.dir_y = 0.0;
+        cub->ray.plane_x = 0.0;
+        cub->ray.plane_y = 0.66;
     }
     else if (cub->file->pos_dir == '2')  // West
     {
-        cub->ray.dirX = -1.0;
-        cub->ray.dirY = 0.0;
-        cub->ray.planeX = 0.0;
-        cub->ray.planeY = -0.66;
+        cub->ray.dir_x = -1.0;
+        cub->ray.dir_y = 0.0;
+        cub->ray.plane_x = 0.0;
+        cub->ray.plane_y = -0.66;
     }
     else
     {
@@ -440,12 +441,12 @@ int init_ray_info(t_cub *cub)
         return (0);
     }
 
-    printf("Player position: (%f, %f)\n", cub->ray.posX, cub->ray.posY);
-    printf("Player direction: (%f, %f)\n", cub->ray.dirX, cub->ray.dirY);
-    printf("Camera plane: (%f, %f)\n", cub->ray.planeX, cub->ray.planeY);
+    printf("Player position: (%f, %f)\n", cub->ray.pos_x, cub->ray.pos_y);
+    printf("Player direction: (%f, %f)\n", cub->ray.dir_x, cub->ray.dir_y);
+    printf("Camera plane: (%f, %f)\n", cub->ray.plane_x, cub->ray.plane_y);
 
-    cub->ray.moveSpeed = MOVE_SPEED;
-    cub->ray.rotSpeed = ROT_SPEED;
+    cub->ray.move_speed = MOVE_SPEED;
+    cub->ray.rot_speed = ROT_SPEED;
 
     return (1);
 }
@@ -456,7 +457,7 @@ void debug_cub(t_cub *cub)
     printf("Window: %p\n", cub->data->win);
     printf("Map width: %d\n", cub->ray.map_width);
     printf("Map height: %d\n", cub->ray.map_height);
-    printf("Player pos: (%f, %f)\n", cub->ray.posX, cub->ray.posY);
+    printf("Player pos: (%f, %f)\n", cub->ray.pos_x, cub->ray.pos_y);
 }
 
 int main(int argc, char **argv)
@@ -489,9 +490,9 @@ int main(int argc, char **argv)
        printf("Error: Ray info initialization failed\n");
        return (-1);
    }
-   printf("Player position: (%f, %f)\n", cub->ray.posX, cub->ray.posY);
-   printf("Player direction: (%f, %f)\n", cub->ray.dirX, cub->ray.dirY);
-   printf("Camera plane: (%f, %f)\n", cub->ray.planeX, cub->ray.planeY);
+   printf("Player position: (%f, %f)\n", cub->ray.pos_x, cub->ray.pos_y);
+   printf("Player direction: (%f, %f)\n", cub->ray.dir_x, cub->ray.dir_y);
+   printf("Camera plane: (%f, %f)\n", cub->ray.plane_x, cub->ray.plane_y);
    
    printf("\n===== 텍스처 로딩 시작 =====\n");
 	ft_read_cub_value(&(cub->file), &cub);	

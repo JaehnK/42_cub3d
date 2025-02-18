@@ -6,7 +6,7 @@
 #    By: kjung <kjung@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/02/03 11:43:32 by jaehukim          #+#    #+#              #
-#    Updated: 2025/02/18 17:19:39 by kjung            ###   ########.fr        #
+#    Updated: 2025/02/18 16:17:20 by kjung            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,8 +21,7 @@ MLX = ./minilibx-linux/libmlx_Linux.a
 MLX_DIR = ./minilibx-linux/
 MLX_M1 = ./minilibx_mms_20200219/
 
-HEADR = ./includes/cub3d.h \
-		./includes/key_linux.h
+HEADR = ./includes/cub3d.h
 
 SRCS_DIR = ./srcs
 OBJS_DIR = ./objs
@@ -32,10 +31,9 @@ SRCS =	test.c \
 		01-01_parse_file_utils.c \
 		02_parse_map.c \
 		03_validate_map.c \
-		03-01_validate_map_utils.c \
 		04_read_cub_value.c \
+		03-01_validate_map_utils.c \
 		10_mlx.c \
-		11_mlx_keyhook.c \
 		99_free_handle.c
 
 
