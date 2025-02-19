@@ -6,7 +6,7 @@
 /*   By: kjung <kjung@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/09 19:30:16 by jaehukim          #+#    #+#             */
-/*   Updated: 2025/02/11 17:58:51 by kjung            ###   ########.fr       */
+/*   Updated: 2025/02/18 16:14:56 by kjung            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,13 +37,16 @@ int	check_inside_zero(char **map, int i, int j)
 
 int	get_pos(char **map, int i, int j, t_file **f)
 {
-	(*f)->pos_x = i;
-	(*f)->pos_y = j;
-	if (map[i][j] == 'E')
-	{
-		(*f)->pos_dir = '1';
-		(*f)->pos_dir_x = 1.0;
-		(*f)->pos_dir_y = 0.0;
+    (*f)->pos_x = j;    // j가 x좌표
+    (*f)->pos_y = i;    // i가 y좌표
+
+    if (map[i][j] == 'E')
+    {
+        (*f)->pos_dir = '1';
+        (*f)->pos_dir_x = 1.0;   // 동쪽은 x+ 방향
+        (*f)->pos_dir_y = 0.0;
+        (*f)->plane_x = 0.0;     // 카메라 평면도 설정
+        (*f)->plane_y = 0.66;  // FOV 66도에 맞춤
 		map[i][j] = '0';
 	}
 	else if (map[i][j] == 'W')

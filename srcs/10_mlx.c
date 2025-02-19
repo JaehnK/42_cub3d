@@ -6,7 +6,7 @@
 /*   By: kjung <kjung@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/09 19:49:59 by jaehukim          #+#    #+#             */
-/*   Updated: 2025/02/11 14:30:59 by kjung            ###   ########.fr       */
+/*   Updated: 2025/02/18 16:46:01 by kjung            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,16 @@ void	ft_mlx_init(t_data *data)
 									&(data->img.endian));
 }
 
-void	my_mlx_pixel_put(t_data *data, int x, int y, int color)
+void my_mlx_pixel_put(t_data *data, int x, int y, int color)
 {
-	char	*dst;
+    char *dst;
+
+    // 범위 체크 추가
+    if (x < 0 || x >= SCREEN_WIDTH || y < 0 || y >= SCREEN_HEIGHT)
+    {
+        printf("Pixel out of bounds: x=%d, y=%d\n", x, y);
+        return;
+    }
 
 	dst = data->img.addr + (y * data->img.line_length + x * \
 			(data->img.bits_per_pixel / 8));

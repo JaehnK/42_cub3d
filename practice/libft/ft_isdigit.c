@@ -1,17 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   11_dda.c                                           :+:      :+:    :+:   */
+/*   ft_isdigit.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kjung <kjung@student.42.fr>                +#+  +:+       +#+        */
+/*   By: jaehukim <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/11 09:35:52 by jaehukim          #+#    #+#             */
-/*   Updated: 2025/02/12 16:36:58 by kjung            ###   ########.fr       */
+/*   Created: 2024/03/04 22:51:01 by jaehukim          #+#    #+#             */
+/*   Updated: 2024/03/05 14:22:56 by jaehukim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3d.h"
+#include "libft.h"
 
+<<<<<<< HEAD:srcs/11_dda.c
 typedef struct	s_ray
 {
 	double	cam_x;
@@ -231,3 +232,12 @@ int     main_loop(t_cub **cub)
 	draw(*cub);
     return (0);
 }
+=======
+int	ft_isdigit(int c)
+{
+	if (c >= '0' && c <= '9')
+		return (1);
+	else
+		return (0);
+}
+>>>>>>> kangwoo:practice/libft/ft_isdigit.c

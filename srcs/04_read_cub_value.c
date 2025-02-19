@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   04_read_cub_value.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jaehukim <jaehukim42@student.42gyeong      +#+  +:+       +#+        */
+/*   By: kjung <kjung@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 09:26:15 by jaehukim          #+#    #+#             */
-/*   Updated: 2025/02/18 09:26:16 by jaehukim         ###   ########.fr       */
+/*   Updated: 2025/02/18 17:19:14 by kjung            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-void	load_image(t_cub **cub, int *texture, char *path, t_img *img)
+static void	load_image(t_cub **cub, int *texture, char *path, t_img *img)
 {
 	int	y;
 	int	x;
@@ -22,6 +22,8 @@ void	load_image(t_cub **cub, int *texture, char *path, t_img *img)
 	// printf("path: %s\n", path);
 	img->img = mlx_xpm_file_to_image(\
 			(*cub)->data->mlx, path, &img->img_width, &img->img_height);
+	if (img->img == NULL)
+		ft_exit("Error\nXpm Not Found", 1, &((*cub)->file));
 	img->data = (int *)mlx_get_data_addr(\
 			img->img, &img->bits_per_pixel, &img->size_l, &img->endian);
 	// printf("%d %d\n", img->img_height, img->img_width);
@@ -48,7 +50,7 @@ void	ft_read_cub_value(t_file **f, t_cub **cub)
 	while (i < 4)
 	{
 		(*cub)->data->textures[i] = \
-			(int *)ft_calloc(sizeof(int), (TEX_H * TEX_W));
+			(int *)ft_calloc(sizeof(int), (texHeight * texWidth));
 		if (!(*cub)->data->textures[i])
 			exit(1);
 		i++;

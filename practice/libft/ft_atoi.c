@@ -1,19 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   00_main.c                                          :+:      :+:    :+:   */
+/*   ft_atoi.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kjung <kjung@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/04 09:58:56 by jaehukim          #+#    #+#             */
-/*   Updated: 2025/02/11 16:26:10 by kjung            ###   ########.fr       */
+/*   Created: 2024/03/04 23:02:32 by jaehukim          #+#    #+#             */
+/*   Updated: 2024/11/30 16:26:41 by kjung            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3d.h"
-
-void	print_file(char **f)
+int	ft_isspace(char c)
 {
+<<<<<<< HEAD:srcs/00_main.c
 	int	i;
 
 	i = 0;
@@ -44,4 +43,33 @@ int	main(int argc, char **argv)
 	cub->data->buf[i] = NULL;
 	mlx_loop_hook(cub->data->mlx, main_loop, &cub);
 	mlx_loop(cub->data->mlx);
+=======
+	if ((c >= 9 && c <= 13) || c == 32)
+		return (1);
+	return (0);
+}
+
+int	ft_atoi(const char *str)
+{
+	unsigned int	result;
+	int				neg;
+
+	result = 0;
+	neg = 1;
+	while (*str == '\t' || *str == '\n' || *str == '\v' \
+			|| *str == '\f' || *str == '\r' || *str == ' ')
+		str++;
+	if (*str == '-' || *str == '+')
+	{
+		if (*str == '-')
+			neg *= -1;
+		str++;
+	}
+	while (*str >= '0' && *str <= '9')
+	{
+		result = result * 10 + (*str - '0');
+		str++;
+	}
+	return ((int)(result * neg));
+>>>>>>> kangwoo:practice/libft/ft_atoi.c
 }
