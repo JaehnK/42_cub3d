@@ -50,7 +50,7 @@ void	ft_key_s(t_cub *cub)
 		cub->ray.pos_y -= cub->ray.dir_y * cub->ray.move_speed;
 }
 
-void	ft_key_a(t_cub *cub)
+void	ft_key_d(t_cub *cub)
 {
 	double	old_dir_x;
 	double	old_plane_x;
@@ -67,7 +67,7 @@ void	ft_key_a(t_cub *cub)
 						cub->ray.plane_y * cos(-cub->ray.rot_speed);
 }
 
-void	ft_key_d(t_cub *cub)
+void	ft_key_a(t_cub *cub)
 {
 	double	old_dir_x;
 	double	old_plane_x;

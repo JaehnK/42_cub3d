@@ -22,6 +22,12 @@
 # define KEY_A 97
 # define KEY_D 100
 # define KEY_ESC 65307
+#define X_EVENT_KEY_PRESS	2
+#define X_EVENT_KEY_RELEASE	3
+#define X_EVENT_KEY_EXIT	17
+#define KEY_PRESS_MASK	1L<<0
+#define mapWidth 24
+#define mapHeight 24
 
 typedef	struct	s_map_list t_map_list;
 
@@ -100,22 +106,27 @@ typedef struct s_cub {
     t_ray_info  ray;  // 레이캐스팅 정보 추가
 } t_cub;
 
-int	ft_parse_file(int ac, char **av, t_file **f);
-int	ft_check_empty_line(char *str);
-int ft_has_dirs(t_file *f);
-int	ft_parse_map(int fd, t_file **f);
-int	ft_validate_map(t_file **f);
+int		ft_parse_file(int ac, char **av, t_file **f);
+int		ft_check_empty_line(char *str);
+int 	ft_has_dirs(t_file *f);
+int		ft_parse_map(int fd, t_file **f);
+int		ft_validate_map(t_file **f);
 // void load_texture(t_cub *cub);
-int	check_frontier(char **map, int i, int width);
-int	check_inside_zero(char **map, int i, int j);
-int	get_pos(char **map, int i, int j, t_file **f);
+int		check_frontier(char **map, int i, int width);
+int		check_inside_zero(char **map, int i, int j);
+int		get_pos(char **map, int i, int j, t_file **f);
 void	ft_read_cub_value(t_file **f, t_cub **cub);
+
 void	ft_mlx_init(t_data *data);
 void    my_mlx_pixel_put(t_data *data, int x, int y, int color);
-int key_press(int key, t_cub *cub);
+int		key_press(int key, t_cub *cub);
 
-// int     main_loop(t_cub **cub);
+int		main_loop(t_cub **cub);
+int		init_world_map(t_cub *cub);
+int 	init_ray_info(t_cub *cub);
 
+void 	draw(t_cub *cub);
+void 	calc(t_cub *cub);
 
 void	ft_split_free(char **arr);
 void	ft_exit(char *msg, int exit_num, t_file **f);

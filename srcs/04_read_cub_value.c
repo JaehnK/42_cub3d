@@ -19,14 +19,12 @@ static void	load_image(t_cub **cub, int *texture, char *path, t_img *img)
 
 	y = 0;
 	x = 0;
-	// printf("path: %s\n", path);
 	img->img = mlx_xpm_file_to_image(\
 			(*cub)->data->mlx, path, &img->img_width, &img->img_height);
 	if (img->img == NULL)
 		ft_exit("Error\nXpm Not Found", 1, &((*cub)->file));
 	img->data = (int *)mlx_get_data_addr(\
 			img->img, &img->bits_per_pixel, &img->size_l, &img->endian);
-	// printf("%d %d\n", img->img_height, img->img_width);
 	while (y < img->img_height)
 	{
 		x = 0;
@@ -39,6 +37,32 @@ static void	load_image(t_cub **cub, int *texture, char *path, t_img *img)
 	}
 	mlx_destroy_image((*cub)->data->mlx, img->img);
 }
+
+int		create_trgb(int t, int r, int g, int b)
+{
+	return (t << 24 | r << 16 | g << 8 | b);
+}
+
+
+static int	load_colour(char *str)
+{
+	int		i;
+	int		rgb[3];
+	int		colour;
+	char	**colours;
+	
+	i = 0;
+	colours = ft_split(str, ',');
+	while (i < 3)
+	{
+		rgb[i] = ft_atoi(colours[i]);
+		free(colours[i++]);
+	}
+	colour = create_trgb(0, rgb[0], rgb[1], rgb[2]);
+	free(colours);
+	return (colour);
+}
+
 
 void	ft_read_cub_value(t_file **f, t_cub **cub)
 {
@@ -60,4 +84,7 @@ void	ft_read_cub_value(t_file **f, t_cub **cub)
 	load_image(cub, (*cub)->data->textures[1], (*f)->we_dir, &img);
 	load_image(cub, (*cub)->data->textures[2], (*f)->so_dir, &img);
 	load_image(cub, (*cub)->data->textures[3], (*f)->no_dir, &img);
+	(*cub)->data->ceiling_clr = load_colour((*cub)->file->c_dir);
+	(*cub)->data->floor_clr = load_colour((*cub)->file->f_dir);
+
 }

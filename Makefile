@@ -27,16 +27,18 @@ HEADR = ./includes/cub3d.h \
 SRCS_DIR = ./srcs
 OBJS_DIR = ./objs
 
-SRCS =	test.c \
+SRCS =	00_main.c \
 		01_parse_file.c \
 		01-01_parse_file_utils.c \
 		02_parse_map.c \
 		03_validate_map.c \
-		04_read_cub_value.c \
 		03-01_validate_map_utils.c \
 		04_read_cub_value.c \
 		10_mlx.c \
 		11_mlx_keyhook.c \
+		20_main_loop.c \
+		21_init_worldmap.c \
+		22_init_ray_info.c \
 		99_free_handle.c
 
 

@@ -15,25 +15,28 @@
 void	ft_mlx_init(t_data *data)
 {
 	data->mlx = mlx_init();
-	data->win = mlx_new_window(data->mlx, SCREEN_WIDTH, SCREEN_HEIGHT, "CUB 3D");
+	data->win = mlx_new_window(\
+				data->mlx, SCREEN_WIDTH, SCREEN_HEIGHT, "CUB 3D");
 	data->img.img = mlx_new_image(data->mlx, SCREEN_WIDTH, SCREEN_HEIGHT);
-	data->img.data = (int *) mlx_get_data_addr(data->img.img, \
+	data->img.addr = (char *) mlx_get_data_addr(data->img.img, \
 									&(data->img.bits_per_pixel), \
 									&(data->img.line_length), \
 									&(data->img.endian));
+	printf("Image: %p\n", data->img.img);
+	printf("Address: %p\n", data->img.data);
+	printf("BPP: %d\n", data->img.bits_per_pixel);
+	printf("Line Length: %d\n", data->img.line_length);
 }
 
-void my_mlx_pixel_put(t_data *data, int x, int y, int color)
+void	my_mlx_pixel_put(t_data *data, int x, int y, int color)
 {
-    char *dst;
+	char	*dst;
 
-    // 범위 체크 추가
-    if (x < 0 || x >= SCREEN_WIDTH || y < 0 || y >= SCREEN_HEIGHT)
-    {
-        printf("Pixel out of bounds: x=%d, y=%d\n", x, y);
-        return;
-    }
-
+	if (x < 0 || x >= SCREEN_WIDTH || y < 0 || y >= SCREEN_HEIGHT)
+	{
+		printf("Pixel out of bounds: x=%d, y=%d\n", x, y);
+		return ;
+	}
 	dst = data->img.addr + (y * data->img.line_length + x * \
 			(data->img.bits_per_pixel / 8));
 	*(unsigned int *) dst = color;

@@ -165,7 +165,7 @@ void calc(t_cub *cub)
 
        // 천장
        for(int y = 0; y < drawStart; y++)
-           cub->ray.buf[y][x] = 0x444444;
+           cub->ray.buf[y][x] = cub->data->ceiling_clr;
 
        // 벽 (텍스처 적용)
        double step = 1.0 * texHeight / lineHeight;
@@ -184,26 +184,27 @@ void calc(t_cub *cub)
 
        // 바닥
        for(int y = drawEnd; y < SCREEN_HEIGHT; y++)
-           cub->ray.buf[y][x] = 0x888888;
+		cub->ray.buf[y][x] = cub->data->floor_clr;
+		//   cub->ray.buf[y][x] = 0x888888;
    }
 }
 
-int main_loop(t_cub **cub)
-{
-    static int frame_count = 0;
-    frame_count++;
+//int main_loop(t_cub **cub)
+//{
+//    static int frame_count = 0;
+//    frame_count++;
     
-    if (frame_count == 1)
-        printf("First frame rendering started\n");
+//    if (frame_count == 1)
+//        printf("First frame rendering started\n");
         
-    calc(*cub);  // 레이캐스팅 다시 활성화
-    draw(*cub);
+//    calc(*cub);  // 레이캐스팅 다시 활성화
+//    draw(*cub);
     
-    if (frame_count == 1)
-        printf("First frame completed\n");
+//    if (frame_count == 1)
+//        printf("First frame completed\n");
         
-    return (0);
-}
+//    return (0);
+//}
 
 // int key_press(int key, t_cub *cub)
 // {
@@ -351,105 +352,105 @@ int	close_window(void *param)
     return (0);
 }
 
-int init_world_map(t_cub *cub)
-{
-    cub->ray.map_height = cub->file->map_height;
-    cub->ray.map_width = cub->file->map_width;
+//int init_world_map(t_cub *cub)
+//{
+//    cub->ray.map_height = cub->file->map_height;
+//    cub->ray.map_width = cub->file->map_width;
     
-    cub->ray.world_map = (int **)malloc(sizeof(int *) * cub->ray.map_height);
-    if (!cub->ray.world_map)
-        return (0);
+//    cub->ray.world_map = (int **)malloc(sizeof(int *) * cub->ray.map_height);
+//    if (!cub->ray.world_map)
+//        return (0);
         
-    for (int i = 0; i < cub->ray.map_height; i++)
-    {
-        cub->ray.world_map[i] = (int *)malloc(sizeof(int) * cub->ray.map_width);
-        if (!cub->ray.world_map[i])
-        {
-            // 이미 할당된 메모리 해제
-            for (int j = 0; j < i; j++)
-                free(cub->ray.world_map[j]);
-            free(cub->ray.world_map);
-            return (0);
-        }
+//    for (int i = 0; i < cub->ray.map_height; i++)
+//    {
+//        cub->ray.world_map[i] = (int *)malloc(sizeof(int) * cub->ray.map_width);
+//        if (!cub->ray.world_map[i])
+//        {
+//            // 이미 할당된 메모리 해제
+//            for (int j = 0; j < i; j++)
+//                free(cub->ray.world_map[j]);
+//            free(cub->ray.world_map);
+//            return (0);
+//        }
             
-        for (int j = 0; j < cub->ray.map_width; j++)
-        {
-            if (cub->file->maparr[i][j] == '1')
-                cub->ray.world_map[i][j] = 1;
-            else if (cub->file->maparr[i][j] == ' ')
-                cub->ray.world_map[i][j] = 1;  // 공백은 벽으로 처리
-            else
-                cub->ray.world_map[i][j] = 0;
-        }
-    }
+//        for (int j = 0; j < cub->ray.map_width; j++)
+//        {
+//            if (cub->file->maparr[i][j] == '1')
+//                cub->ray.world_map[i][j] = 1;
+//            else if (cub->file->maparr[i][j] == ' ')
+//                cub->ray.world_map[i][j] = 1;  // 공백은 벽으로 처리
+//            else
+//                cub->ray.world_map[i][j] = 0;
+//        }
+//    }
     
-    return (1);  // 성공적으로 초기화 완료
-}
+//    return (1);  // 성공적으로 초기화 완료
+//}
 
-int init_ray_info(t_cub *cub)
-{
-    printf("Starting ray info initialization...\n");
-    printf("File pos_x: %f, pos_y: %f\n", cub->file->pos_x, cub->file->pos_y);
-    printf("Map dimensions: %d x %d\n", cub->ray.map_width, cub->ray.map_height);
+//int init_ray_info(t_cub *cub)
+//{
+//    printf("Starting ray info initialization...\n");
+//    printf("File pos_x: %f, pos_y: %f\n", cub->file->pos_x, cub->file->pos_y);
+//    printf("Map dimensions: %d x %d\n", cub->ray.map_width, cub->ray.map_height);
     
-    // 위치 유효성 검사
-    if (cub->file->pos_x < 0 || cub->file->pos_x >= cub->ray.map_width ||
-        cub->file->pos_y < 0 || cub->file->pos_y >= cub->ray.map_height)
-    {
-        printf("Error: Invalid player position (%f, %f) for map size %dx%d\n",
-               cub->file->pos_x, cub->file->pos_y,
-               cub->ray.map_width, cub->ray.map_height);
-        return (0);
-    }
+//    // 위치 유효성 검사
+//    if (cub->file->pos_x < 0 || cub->file->pos_x >= cub->ray.map_width ||
+//        cub->file->pos_y < 0 || cub->file->pos_y >= cub->ray.map_height)
+//    {
+//        printf("Error: Invalid player position (%f, %f) for map size %dx%d\n",
+//               cub->file->pos_x, cub->file->pos_y,
+//               cub->ray.map_width, cub->ray.map_height);
+//        return (0);
+//    }
     
-    cub->ray.pos_x = cub->file->pos_x;
-    cub->ray.pos_y = cub->file->pos_y;
-	memset(cub->ray.buf, 0, sizeof(cub->ray.buf));
-    printf("Player direction: %c\n", cub->file->pos_dir);
-    // 방향 초기화
-    if (cub->file->pos_dir == '4')  // North
-    {
-        cub->ray.dir_x = 0.0;
-        cub->ray.dir_y = -1.0;
-        cub->ray.plane_x = 0.66;
-        cub->ray.plane_y = 0.0;
-    }
-    else if (cub->file->pos_dir == '3')  // South 
-    {
-        cub->ray.dir_x = 0.0;
-        cub->ray.dir_y = 1.0;
-        cub->ray.plane_x = -0.66;
-        cub->ray.plane_y = 0.0;
-    }
-    else if (cub->file->pos_dir == '1')  // East
-    {
-        cub->ray.dir_x = 1.0;
-        cub->ray.dir_y = 0.0;
-        cub->ray.plane_x = 0.0;
-        cub->ray.plane_y = 0.66;
-    }
-    else if (cub->file->pos_dir == '2')  // West
-    {
-        cub->ray.dir_x = -1.0;
-        cub->ray.dir_y = 0.0;
-        cub->ray.plane_x = 0.0;
-        cub->ray.plane_y = -0.66;
-    }
-    else
-    {
-        printf("Invalid direction value\n");
-        return (0);
-    }
+//    cub->ray.pos_x = cub->file->pos_x;
+//    cub->ray.pos_y = cub->file->pos_y;
+//	memset(cub->ray.buf, 0, sizeof(cub->ray.buf));
+//    printf("Player direction: %c\n", cub->file->pos_dir);
+//    // 방향 초기화
+//    if (cub->file->pos_dir == '4')  // North
+//    {
+//        cub->ray.dir_x = 0.0;
+//        cub->ray.dir_y = -1.0;
+//        cub->ray.plane_x = 0.66;
+//        cub->ray.plane_y = 0.0;
+//    }
+//    else if (cub->file->pos_dir == '3')  // South 
+//    {
+//        cub->ray.dir_x = 0.0;
+//        cub->ray.dir_y = 1.0;
+//        cub->ray.plane_x = -0.66;
+//        cub->ray.plane_y = 0.0;
+//    }
+//    else if (cub->file->pos_dir == '1')  // East
+//    {
+//        cub->ray.dir_x = 1.0;
+//        cub->ray.dir_y = 0.0;
+//        cub->ray.plane_x = 0.0;
+//        cub->ray.plane_y = 0.66;
+//    }
+//    else if (cub->file->pos_dir == '2')  // West
+//    {
+//        cub->ray.dir_x = -1.0;
+//        cub->ray.dir_y = 0.0;
+//        cub->ray.plane_x = 0.0;
+//        cub->ray.plane_y = -0.66;
+//    }
+//    else
+//    {
+//        printf("Invalid direction value\n");
+//        return (0);
+//    }
 
-    printf("Player position: (%f, %f)\n", cub->ray.pos_x, cub->ray.pos_y);
-    printf("Player direction: (%f, %f)\n", cub->ray.dir_x, cub->ray.dir_y);
-    printf("Camera plane: (%f, %f)\n", cub->ray.plane_x, cub->ray.plane_y);
+//    printf("Player position: (%f, %f)\n", cub->ray.pos_x, cub->ray.pos_y);
+//    printf("Player direction: (%f, %f)\n", cub->ray.dir_x, cub->ray.dir_y);
+//    printf("Camera plane: (%f, %f)\n", cub->ray.plane_x, cub->ray.plane_y);
 
-    cub->ray.move_speed = MOVE_SPEED;
-    cub->ray.rot_speed = ROT_SPEED;
+//    cub->ray.move_speed = MOVE_SPEED;
+//    cub->ray.rot_speed = ROT_SPEED;
 
-    return (1);
-}
+//    return (1);
+//}
 
 void debug_cub(t_cub *cub)
 {
@@ -477,7 +478,7 @@ int main(int argc, char **argv)
    ft_parse_file(argc, argv, &(cub->file));
 
    printf("\n===== World Map 초기화 시작 =====\n");
-   if (!init_world_map(cub))
+   if (init_world_map(cub))
    {
        printf("Error: World map initialization failed\n");
        return (-1);
@@ -485,7 +486,7 @@ int main(int argc, char **argv)
    printf("Map dimensions: %d x %d\n", cub->ray.map_width, cub->ray.map_height);
 
    printf("\n===== Ray Info 초기화 시작 =====\n");
-   if (!init_ray_info(cub))
+   if (init_ray_info(cub))
    {
        printf("Error: Ray info initialization failed\n");
        return (-1);
