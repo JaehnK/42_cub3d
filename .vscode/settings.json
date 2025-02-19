@@ -6,6 +6,7 @@
 		"map": "c",
 		"format": "c",
 		"stdlib.h": "c",
-		"key_linux.h": "c"
+		"key_linux.h": "c",
+		"stdio.h": "c"
 	}
 }

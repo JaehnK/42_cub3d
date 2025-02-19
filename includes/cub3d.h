@@ -55,18 +55,6 @@ typedef	struct	s_file
 
 typedef struct s_img
 {
-<<<<<<< HEAD
-	void	*img;
-	int		*data;
-	char	*addr;
-	int 	size_l;
-	int		bits_per_pixel;
-	int		line_length;
-	int		img_width;
-	int		img_height;
-	int		endian;
-}	t_img;
-=======
     void    *img;           // MLX 이미지 포인터
     int     *data;          // 이미지 데이터 배열
     char    *addr;          // 픽셀 주소
@@ -77,7 +65,6 @@ typedef struct s_img
     int     img_width;      // 이미지 너비
     int     img_height;     // 이미지 높이
 } t_img;
->>>>>>> kangwoo
 
 typedef struct t_data
 {
@@ -122,14 +109,7 @@ int	ft_validate_map(t_file **f);
 int	check_frontier(char **map, int i, int width);
 int	check_inside_zero(char **map, int i, int j);
 int	get_pos(char **map, int i, int j, t_file **f);
-<<<<<<< HEAD
-
-void	ft_read_cub_value(t_file **f, t_cub **cb);
-
-
-=======
 void	ft_read_cub_value(t_file **f, t_cub **cub);
->>>>>>> kangwoo
 void	ft_mlx_init(t_data *data);
 void    my_mlx_pixel_put(t_data *data, int x, int y, int color);
 int key_press(int key, t_cub *cub);
