@@ -19,14 +19,11 @@ void	calc(t_cub *cub)
 	x = 0;
 	while (x < SCREEN_WIDTH)
 	{
-		ft_init_player_view();
-		while (cub->ray.hit == 0)
-		{
-			ft_hit_checker();
-		}
-		ft_calc_perp_wall_dist();
-		ft_calc_texture();
-		ft_adapt_texture();
-		x++;	
+		ft_init_player_view(x, cub);
+		ft_hit_checker(cub);
+		ft_calc_perp_wall_dist(cub);
+		ft_calc_texture(cub);
+		ft_adapt_texture(x, cub);
+		x++;
 	}
 }

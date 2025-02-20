@@ -38,11 +38,10 @@ static void	load_image(t_cub **cub, int *texture, char *path, t_img *img)
 	mlx_destroy_image((*cub)->data->mlx, img->img);
 }
 
-int		create_trgb(int t, int r, int g, int b)
+int	create_trgb(int t, int r, int g, int b)
 {
 	return (t << 24 | r << 16 | g << 8 | b);
 }
-
 
 static int	load_colour(char *str)
 {
@@ -50,7 +49,7 @@ static int	load_colour(char *str)
 	int		rgb[3];
 	int		colour;
 	char	**colours;
-	
+
 	i = 0;
 	colours = ft_split(str, ',');
 	while (i < 3)
@@ -62,7 +61,6 @@ static int	load_colour(char *str)
 	free(colours);
 	return (colour);
 }
-
 
 void	ft_read_cub_value(t_file **f, t_cub **cub)
 {
@@ -86,5 +84,4 @@ void	ft_read_cub_value(t_file **f, t_cub **cub)
 	load_image(cub, (*cub)->data->textures[3], (*f)->no_dir, &img);
 	(*cub)->data->ceiling_clr = load_colour((*cub)->file->c_dir);
 	(*cub)->data->floor_clr = load_colour((*cub)->file->f_dir);
-
 }

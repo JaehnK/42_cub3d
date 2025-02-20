@@ -39,6 +39,13 @@ SRCS =	00_main.c \
 		20_main_loop.c \
 		21_init_worldmap.c \
 		22_init_ray_info.c \
+		23_calcul.c \
+		24_init_view.c \
+		25_hit_checker.c \
+		26_calc_perp_wall_dist.c \
+		27_calc_texture.c \
+		28_adapt_texture.c \
+		29_draw.c \
 		99_free_handle.c
 
 

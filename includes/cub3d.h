@@ -84,7 +84,8 @@ typedef struct t_data
 	t_img	img;
 }	t_data;
 
-typedef struct s_ray_info {
+typedef struct s_ray_info
+{
     double pos_x; // posX
     double pos_y; // posY
     double dir_x; // dirX
@@ -98,8 +99,8 @@ typedef struct s_ray_info {
     int     **world_map;
     int     map_width;
     int     map_height;
-	double	ratdir_x;
-	double	ratdir_y;
+	double	raydir_x;
+	double	raydir_y;
 	int		map_x;
 	int		map_y;
 	double	delta_dist_x;
@@ -110,11 +111,12 @@ typedef struct s_ray_info {
 	int		step_y;
 	int		hit;
 	int		side;
-	double	prep_wall_dist;
+	double	perp_wall_dist;
 	int		line_height;
 	int		draw_start;
 	int		draw_end;
 	int		tex_num;
+	int		tex_x;
 } t_ray_info;
 
 typedef struct s_cub {
@@ -141,6 +143,12 @@ int		key_press(int key, t_cub *cub);
 int		main_loop(t_cub **cub);
 int		init_world_map(t_cub *cub);
 int 	init_ray_info(t_cub *cub);
+void	ft_init_player_view(int x, t_cub *cub);
+void 	ft_hit_checker(t_cub *cub);
+void	ft_calc_perp_wall_dist(t_cub *cub);
+void	ft_calc_texture(t_cub *cub);
+void	ft_adapt_texture(int x, t_cub *cub);
+
 
 void 	draw(t_cub *cub);
 void 	calc(t_cub *cub);
