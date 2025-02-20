@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   00_main.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jaehukim <jaehukim42@student.42gyeong      +#+  +:+       +#+        */
+/*   By: kjung <kjung@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 15:38:34 by jaehukim          #+#    #+#             */
-/*   Updated: 2025/02/19 15:38:35 by jaehukim         ###   ########.fr       */
+/*   Updated: 2025/02/20 16:36:49 by kjung            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,155 +14,147 @@
 
 void draw(t_cub *cub)
 {
-	static int first_draw = 1;
-	if (first_draw)
-	{
-		printf("Draw function called, using calc buffer\n");
-		first_draw = 0;
-	}
+	int	i;
+	int	j;
 
-	// calc 함수의 버퍼를 화면에 그리기
-	for (int y = 0; y < SCREEN_HEIGHT; y++)
+	i = 0;
+	while (i < SCREEN_HEIGHT)
 	{
-		for (int x = 0; x < SCREEN_WIDTH; x++)
+		j = 0;
+		while (j < SCREEN_WIDTH)
 		{
-			my_mlx_pixel_put(cub->data, x, y, cub->ray.buf[y][x]);
+			my_mlx_pixel_put(cub->data, j, i, cub->ray.buf[i][j]);
+			j++;
 		}
+		i++;
 	}
-	
 	mlx_put_image_to_window(cub->data->mlx, cub->data->win, cub->data->img.img, 0, 0);
 }
 
 void calc(t_cub *cub)
 {
-static int first_calc = 1;
-if (first_calc)
-{
-	printf("\n===== First Calc Call =====\n");
-	printf("Player position: (%f, %f)\n", cub->ray.pos_x, cub->ray.pos_y);
-	printf("Direction: (%f, %f)\n", cub->ray.dir_x, cub->ray.dir_y);
-	printf("Camera plane: (%f, %f)\n", cub->ray.plane_x, cub->ray.plane_y);
-	printf("Map dimensions: %d x %d\n", cub->ray.map_width, cub->ray.map_height);
-	first_calc = 0;
-}
-
-for(int x = 0; x < SCREEN_WIDTH; x++)
-{
-	double cameraX = 2 * x / (double)SCREEN_WIDTH - 1;
-	double raydir_x = cub->ray.dir_x + cub->ray.plane_x * cameraX;
-	double rayDirY = cub->ray.dir_y + cub->ray.plane_y * cameraX;
-
-	int mapX = (int)cub->ray.pos_x;
-	int mapY = (int)cub->ray.pos_y;
-
-	double deltaDistX = (raydir_x == 0) ? 1e30 : fabs(1 / raydir_x);
-	double deltaDistY = (rayDirY == 0) ? 1e30 : fabs(1 / rayDirY);
-
-	double sideDistX;
-	double sideDistY;
 	
-	int stepX = (raydir_x < 0) ? -1 : 1;
-	int stepY = (rayDirY < 0) ? -1 : 1;
-
-	if (raydir_x < 0)
-		sideDistX = (cub->ray.pos_x - mapX) * deltaDistX;
-	else
-		sideDistX = (mapX + 1.0 - cub->ray.pos_x) * deltaDistX;
-	if (rayDirY < 0)
-		sideDistY = (cub->ray.pos_y - mapY) * deltaDistY;
-	else
-		sideDistY = (mapY + 1.0 - cub->ray.pos_y) * deltaDistY;
-
-	int hit = 0;
-	int side = 0;
-	while (hit == 0)
+	for(int x = 0; x < SCREEN_WIDTH; x++)
 	{
-		int nextMapX = mapX;
-		int nextMapY = mapY;
+		// 1번: init_player_view
+		double camera_x = 2 * x / (double)SCREEN_WIDTH - 1;
+		double raydir_x = cub->ray.dir_x + cub->ray.plane_x * camera_x;
+		double raydir_y = cub->ray.dir_y + cub->ray.plane_y * camera_x;
+
+		int map_x = (int)cub->ray.pos_x;
+		int map_y = (int)cub->ray.pos_y;
+
+		double delta_dist_x = (raydir_x == 0) ? 1e30 : fabs(1 / raydir_x);
+		double delta_dist_y = (raydir_y == 0) ? 1e30 : fabs(1 / raydir_y);
+
+		double side_dist_x;
+		double side_dist_y;
 		
-		if (sideDistX < sideDistY)
-		{
-			sideDistX += deltaDistX;
-			nextMapX = mapX + stepX;
-			side = 0;
-		}
+		int step_x = (raydir_x < 0) ? -1 : 1;
+		int step_y = (raydir_y < 0) ? -1 : 1;
+
+		if (raydir_x < 0)
+			side_dist_x = (cub->ray.pos_x - map_x) * delta_dist_x;
 		else
+			side_dist_x = (map_x + 1.0 - cub->ray.pos_x) * delta_dist_x;
+		if (raydir_y < 0)
+			side_dist_y = (cub->ray.pos_y - map_y) * delta_dist_y;
+		else
+			side_dist_y = (map_y + 1.0 - cub->ray.pos_y) * delta_dist_y;
+
+		
+		int hit = 0;
+		int side = 0;
+		while (hit == 0)
 		{
-			sideDistY += deltaDistY;
-			nextMapY = mapY + stepY;
-			side = 1;
+			// 2, hit checker
+			int next_map_x = map_x;
+			int next_map_y = map_y;
+			
+			if (side_dist_x < side_dist_y)
+			{
+				side_dist_x += delta_dist_x;
+				next_map_x = map_x + step_x;
+				side = 0;
+			}
+			else
+			{
+				side_dist_y += delta_dist_y;
+				next_map_y = map_y + step_y;
+				side = 1;
+			}
+			
+			if (next_map_x < 0 || next_map_x >= cub->ray.map_width || 
+				next_map_y < 0 || next_map_y >= cub->ray.map_height)
+			{
+				hit = 1;
+				break;
+			}
+			
+			map_x = next_map_x;
+			map_y = next_map_y;
+			
+			if (cub->ray.world_map[map_y][map_x] > 0)
+				hit = 1;
 		}
+
+		// 3. calcul - perp-wall-dist
+		double perp_wall_dist;
+		if (side == 0)
+			perp_wall_dist = (map_x - cub->ray.pos_x + (1 - step_x) / 2) / raydir_x;
+		else
+			perp_wall_dist = (map_y - cub->ray.pos_y + (1 - step_y) / 2) / raydir_y;
+
+		int line_height = (int)(SCREEN_HEIGHT / perp_wall_dist);
+
+		int draw_start = -line_height / 2 + SCREEN_HEIGHT / 2;
+		if (draw_start < 0) draw_start = 0;
+		int draw_end = line_height / 2 + SCREEN_HEIGHT / 2;
+		if (draw_end >= SCREEN_HEIGHT) draw_end = SCREEN_HEIGHT - 1;
+
+		// 텍스처 계산
+		double wall_x;
+		if (side == 0)
+			wall_x = cub->ray.pos_y + perp_wall_dist * raydir_y;
+		else
+			wall_x = cub->ray.pos_x + perp_wall_dist * raydir_x;
+		wall_x -= floor(wall_x);
+
+		int tex_x = (int)(wall_x * (double)texWidth);
+		if (side == 0 && raydir_x > 0) tex_x = texWidth - tex_x - 1;
+		if (side == 1 && raydir_y < 0) tex_x = texWidth - tex_x - 1;
+
+		// 텍스처 적용
+		int tex_num;
+		if (side == 0)
+			tex_num = (raydir_x > 0) ? 0 : 1;  // east/west
+		else
+			tex_num = (raydir_y > 0) ? 2 : 3;  // south/north
+
+		// 천장
+		for(int y = 0; y < draw_start; y++)
+			cub->ray.buf[y][x] = cub->data->ceiling_clr;
+
+		// 벽 (텍스처 적용)
+		double step = 1.0 * texHeight / line_height;
+		double tex_pos = (draw_start - SCREEN_HEIGHT / 2 + line_height / 2) * step;
 		
-		if (nextMapX < 0 || nextMapX >= cub->ray.map_width || 
-			nextMapY < 0 || nextMapY >= cub->ray.map_height)
+		for(int y = draw_start; y < draw_end; y++)
 		{
-			hit = 1;
-			break;
+			int tex_y = (int)tex_pos & (texHeight - 1);
+			tex_pos += step;
+
+			int color = cub->data->textures[tex_num][texHeight * tex_y + tex_x];
+			if (side == 1)
+				color = (color >> 1) & 8355711;  // 어둡게
+			cub->ray.buf[y][x] = color;
 		}
-		
-		mapX = nextMapX;
-		mapY = nextMapY;
-		
-		if (cub->ray.world_map[mapY][mapX] > 0)
-			hit = 1;
+
+		// 바닥
+		for(int y = draw_end; y < SCREEN_HEIGHT; y++)
+			cub->ray.buf[y][x] = cub->data->floor_clr;
+			//   cub->ray.buf[y][x] = 0x888888;
 	}
-
-	double perpWallDist;
-	if (side == 0)
-		perpWallDist = (mapX - cub->ray.pos_x + (1 - stepX) / 2) / raydir_x;
-	else
-		perpWallDist = (mapY - cub->ray.pos_y + (1 - stepY) / 2) / rayDirY;
-
-	int lineHeight = (int)(SCREEN_HEIGHT / perpWallDist);
-
-	int drawStart = -lineHeight / 2 + SCREEN_HEIGHT / 2;
-	if (drawStart < 0) drawStart = 0;
-	int drawEnd = lineHeight / 2 + SCREEN_HEIGHT / 2;
-	if (drawEnd >= SCREEN_HEIGHT) drawEnd = SCREEN_HEIGHT - 1;
-
-	// 텍스처 계산
-	double wallX;
-	if (side == 0)
-		wallX = cub->ray.pos_y + perpWallDist * rayDirY;
-	else
-		wallX = cub->ray.pos_x + perpWallDist * raydir_x;
-	wallX -= floor(wallX);
-
-	int texX = (int)(wallX * (double)texWidth);
-	if (side == 0 && raydir_x > 0) texX = texWidth - texX - 1;
-	if (side == 1 && rayDirY < 0) texX = texWidth - texX - 1;
-
-	// 텍스처 적용
-	int texNum;
-	if (side == 0)
-		texNum = (raydir_x > 0) ? 0 : 1;  // east/west
-	else
-		texNum = (rayDirY > 0) ? 2 : 3;  // south/north
-
-	// 천장
-	for(int y = 0; y < drawStart; y++)
-		cub->ray.buf[y][x] = cub->data->ceiling_clr;
-
-	// 벽 (텍스처 적용)
-	double step = 1.0 * texHeight / lineHeight;
-	double texPos = (drawStart - SCREEN_HEIGHT / 2 + lineHeight / 2) * step;
-	
-	for(int y = drawStart; y < drawEnd; y++)
-	{
-		int texY = (int)texPos & (texHeight - 1);
-		texPos += step;
-
-		int color = cub->data->textures[texNum][texHeight * texY + texX];
-		if (side == 1)
-			color = (color >> 1) & 8355711;  // 어둡게
-		cub->ray.buf[y][x] = color;
-	}
-
-	// 바닥
-	for(int y = drawEnd; y < SCREEN_HEIGHT; y++)
-		cub->ray.buf[y][x] = cub->data->floor_clr;
-		//   cub->ray.buf[y][x] = 0x888888;
-}
 }
 
 

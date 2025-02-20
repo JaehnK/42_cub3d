@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   99_error_handle.c                                  :+:      :+:    :+:   */
+/*   99_free_handle.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jaehukim <jaehukim42@student.42gyeong      +#+  +:+       +#+        */
+/*   By: kjung <kjung@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 11:06:38 by jaehukim          #+#    #+#             */
-/*   Updated: 2025/02/04 11:06:39 by jaehukim         ###   ########.fr       */
+/*   Updated: 2025/02/20 15:39:10 by kjung            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,11 +26,18 @@ void	ft_split_free(char **arr)
 	free(arr);
 }
 
-void	free_file_struct(t_file **file)
+void	free_maparr(t_file **file)
 {
 	int	i;
 
 	i = 0;
+	while ((*file)->maparr[i])
+		free((*file)->maparr[i++]);
+	free((*file)->maparr);
+}
+
+void	free_file_struct(t_file **file)
+{
 	if (!(*file))
 		return ;
 	if (((*file))->filename)
@@ -48,11 +55,7 @@ void	free_file_struct(t_file **file)
 	if ((*file)->c_dir)
 		free((*file)->c_dir);
 	if ((*file)->maparr)
-	{
-		while ((*file)->maparr[i])
-			free((*file)->maparr[i++]);
-		free((*file)->maparr);
-	}
+		free_maparr(file);
 	free(*file);
 	(*file) = NULL;
 }

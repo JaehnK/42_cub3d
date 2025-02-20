@@ -98,6 +98,23 @@ typedef struct s_ray_info {
     int     **world_map;
     int     map_width;
     int     map_height;
+	double	ratdir_x;
+	double	ratdir_y;
+	int		map_x;
+	int		map_y;
+	double	delta_dist_x;
+	double	delta_dist_y;
+	double	side_dist_x;
+	double	side_dist_y;
+	int		step_x;
+	int		step_y;
+	int		hit;
+	int		side;
+	double	prep_wall_dist;
+	int		line_height;
+	int		draw_start;
+	int		draw_end;
+	int		tex_num;
 } t_ray_info;
 
 typedef struct s_cub {
