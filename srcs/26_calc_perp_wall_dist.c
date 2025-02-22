@@ -22,9 +22,14 @@ void	ft_calc_perp_wall_dist(t_cub *cub)
 								(1 - cub->ray.step_y) / 2) / cub->ray.raydir_y;
 	cub->ray.line_height = (int)(SCREEN_HEIGHT / cub->ray.perp_wall_dist);
 	cub->ray.draw_start = -cub->ray.line_height / 2 + SCREEN_HEIGHT / 2;
+	//if (cub->ray.draw_start > 720)
+	// cub->ray.draw_start = 1;
+
 	if (cub->ray.draw_start < 0)
 		cub->ray.draw_start = 0;
 	cub->ray.draw_end = cub->ray.line_height / 2 + SCREEN_HEIGHT / 2;
 	if (cub->ray.draw_end >= SCREEN_HEIGHT)
-		cub->ray.draw_end = SCREEN_HEIGHT - 1;
+		cub->ray.draw_end = SCREEN_HEIGHT;
+	//if (cub->ray.draw_end < 0)
+	//	cub->ray.draw_end = cub->ray.draw_start  + 1;
 }

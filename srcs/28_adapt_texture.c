@@ -37,6 +37,7 @@ static void	adapt_ceiling_texture(int x, t_cub *cub)
 	y = 0;
 	while (y < cub->ray.draw_start)
 	{
+		//printf("%d %d\n",y,cub->ray.draw_start);
 		cub->ray.buf[y][x] = cub->data->ceiling_clr;
 		y++;
 	}
@@ -74,6 +75,7 @@ static void	adapt_floor_texture(int x, t_cub *cub)
 	y = cub->ray.draw_end;
 	while (y < SCREEN_HEIGHT)
 	{
+		//printf("%d\n",y);
 		cub->ray.buf[y][x] = cub->data->floor_clr;
 		y++;
 	}

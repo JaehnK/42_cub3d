@@ -48,8 +48,8 @@ int	init_ray_info(t_cub *cub)
 			cub->ray.map_width, cub->ray.map_height);
 		return (1);
 	}
-	cub->ray.pos_x = cub->file->pos_x;
-	cub->ray.pos_y = cub->file->pos_y;
+	cub->ray.pos_x = cub->file->pos_x + 0.5;
+	cub->ray.pos_y = cub->file->pos_y + 0.5;
 	ft_memset(cub->ray.buf, 0, sizeof(cub->ray.buf));
 	cub->ray.dir_x = 0.0;
 	cub->ray.dir_y = 0.0;

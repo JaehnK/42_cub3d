@@ -41,11 +41,16 @@ t_map_list	*alloc_map_list(int fd)
 	idx = 0;
 	line = get_next_line(fd);
 	head = NULL;
+	int i  = 0;
 	while (line)
 	{
-		if (line[0] != '1' && line[0] != '0')
-			break ;
-		else
+		while (line[i])
+		{
+			if (line[i] != '1' && line[i] != '0' && line[i] != 'N'&& line[i] != 'E'&& line[i] != 'W'&& line[i] != 'S'&& line[i] != '\n')
+				exit(1) ;
+			i++;
+		}
+		//else
 		{
 			if (!head)
 				head = alloc_new_node(idx++, line, NULL);
