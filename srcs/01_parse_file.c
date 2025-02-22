@@ -6,9 +6,10 @@
 /*   By: kjung <kjung@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 10:10:09 by jaehukim          #+#    #+#             */
-/*   Updated: 2025/02/18 16:28:21 by kjung            ###   ########.fr       */
+/*   Updated: 2025/02/22 18:55:58 by kjung            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 #include "cub3d.h"
 
 int	validate_file(int ac, char **av, t_file **f)
@@ -18,16 +19,14 @@ int	validate_file(int ac, char **av, t_file **f)
 	if (ac != 2)
 	{
 		ft_putstr_fd("Error:\nInvalid Arguments\n", 2);
-		free(*f);
-		exit(1);
+		return (1);
 	}
 	tmp = ft_substr(av[1], ft_strlen(av[1]) - 4, 4);
 	if (ft_strncmp(tmp, ".cub", 4) != 0)
 	{
-		free(*f);
 		free(tmp);
 		ft_putstr_fd("Error:\nCheck Filename\n", 2);
-		exit(1);
+		return (1);
 	}
 	free(tmp);
 	(*f)->filename = ft_strdup(av[1]);
@@ -68,7 +67,7 @@ int	assign_dir(char *line, t_file **f)
 		flag = 1;
 	ft_split_free(contents);
 	if (flag)
-		ft_exit("Error\nInvalid Direction\n", 1, f);
+		return (1);
 	return (0);
 }
 
@@ -86,7 +85,8 @@ int	get_dirs(int fd, t_file **f)
 			free(line);
 			continue ;
 		}
-		assign_dir(line, f);
+		if (assign_dir(line, f))
+			return (1);
 		free(line);
 		if (ft_has_dirs(*f))
 			break ;
@@ -101,10 +101,16 @@ int	ft_parse_file(int ac, char **av, t_file **f)
 	int		fd;
 
 	*f = ft_calloc(sizeof(t_file), 1);
-	validate_file(ac, av, f);
+	if (validate_file(ac, av, f))
+		return (1);
 	fd = open((*f)->filename, O_RDONLY);
-	get_dirs(fd, f);
-	ft_parse_map(fd, f);
+	if (get_dirs(fd, f))
+	{
+		close(fd);
+		return (1);
+	}
+	if (ft_parse_map(fd, f))
+		return (1);
 	close(fd);
 	return (0);
 }

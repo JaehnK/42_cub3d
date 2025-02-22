@@ -6,23 +6,11 @@
 /*   By: kjung <kjung@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 16:32:14 by jaehukim          #+#    #+#             */
-/*   Updated: 2025/02/20 15:21:57 by kjung            ###   ########.fr       */
+/*   Updated: 2025/02/22 18:55:45 by kjung            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
-
-void	printlist(t_map_list *head)
-{
-	int	idx;
-
-	idx = 0;
-	while (head)
-	{
-		printf("%s: %d\n", head->line, idx++);
-		head = head->next;
-	}
-}
 
 t_map_list	*alloc_new_node(int idx, char *line, t_map_list **head)
 {
@@ -41,7 +29,6 @@ t_map_list	*alloc_new_node(int idx, char *line, t_map_list **head)
 	while (tmp && tmp->next)
 		tmp = (tmp)->next;
 	(tmp)->next = new;
-	printf("node :%s", new->line);
 	return (new);
 }
 
@@ -105,8 +92,9 @@ int	ft_parse_map(int fd, t_file **f)
 
 	node = alloc_map_list(fd);
 	if (!node)
-		ft_exit("Error\n: Failed to Read Map\n", 1, f);
+		return (1);
 	convert_list_to_array(&node, f);
-	ft_validate_map(f);
+	if (ft_validate_map(f))
+		return (1);
 	return (0);
 }

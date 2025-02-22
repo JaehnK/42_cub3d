@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   21_init_wordmap.c                                  :+:      :+:    :+:   */
+/*   21_init_worldmap.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jaehukim <jaehukim42@student.42gyeong      +#+  +:+       +#+        */
+/*   By: kjung <kjung@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 13:30:31 by jaehukim          #+#    #+#             */
-/*   Updated: 2025/02/19 13:30:32 by jaehukim         ###   ########.fr       */
+/*   Updated: 2025/02/22 19:11:18 by kjung            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,8 @@ int	init_world_map(t_cub *cub)
 	i = 0;
 	cub->ray.map_height = cub->file->map_height;
 	cub->ray.map_width = cub->file->map_width;
-	cub->ray.world_map = (int **)malloc(sizeof(int *) * cub->ray.map_height);
+	cub->ray.world_map = (int **)malloc(sizeof(int *) * \
+						(cub->ray.map_height + 1));
 	if (!cub->ray.world_map)
 		return (1);
 	while (i < cub->ray.map_height)
@@ -63,5 +64,6 @@ int	init_world_map(t_cub *cub)
 								&(cub->ray), cub->file);
 		i++;
 	}
+	cub->ray.world_map[i] = NULL;
 	return (0);
 }

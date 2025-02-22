@@ -6,7 +6,7 @@
 /*   By: kjung <kjung@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 16:42:53 by kjung             #+#    #+#             */
-/*   Updated: 2025/02/18 17:25:27 by kjung            ###   ########.fr       */
+/*   Updated: 2025/02/22 20:27:39 by kjung            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,15 +86,17 @@ void	ft_key_a(t_cub *cub)
 
 int	key_press(int key, t_cub *cub)
 {
-	if (key == KEY_W)
+	if (key == 119)
 		ft_key_w(cub);
-	if (key == KEY_S)
+	if (key == 115)
 		ft_key_s(cub);
-	if (key == KEY_A)
+	if (key == 97)
 		ft_key_a(cub);
-	if (key == KEY_D)
+	if (key == 100)
 		ft_key_d(cub);
-	if (key == KEY_ESC)
-		exit(0);
+	if (key == 65307)
+	{
+		close_window((void *) cub);
+	}
 	return (0);
 }

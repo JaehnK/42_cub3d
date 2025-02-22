@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   20_calculation.c                                   :+:      :+:    :+:   */
+/*   20_main_loop.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jaehukim <jaehukim42@student.42gyeong      +#+  +:+       +#+        */
+/*   By: kjung <kjung@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 12:49:46 by jaehukim          #+#    #+#             */
-/*   Updated: 2025/02/19 12:49:47 by jaehukim         ###   ########.fr       */
+/*   Updated: 2025/02/22 18:24:42 by kjung            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,7 @@ int	main_loop(t_cub **cub)
 	static int	frame_count;
 
 	frame_count++;
-	if (frame_count == 1)
-		printf("First frame rendering started\n");
 	calc(*cub);
 	draw(*cub);
-	if (frame_count == 1)
-		printf("First frame completed\n");
 	return (0);
 }

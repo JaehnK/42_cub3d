@@ -6,7 +6,7 @@
 #    By: kjung <kjung@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/02/03 11:43:32 by jaehukim          #+#    #+#              #
-#    Updated: 2025/02/18 17:19:39 by kjung            ###   ########.fr        #
+#    Updated: 2025/02/22 20:28:08 by kjung            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,7 +22,6 @@ MLX_DIR = ./minilibx-linux/
 MLX_M1 = ./minilibx_mms_20200219/
 
 HEADR = ./includes/cub3d.h \
-		./includes/key_linux.h
 
 SRCS_DIR = ./srcs
 OBJS_DIR = ./objs
@@ -46,6 +45,7 @@ SRCS =	00_main.c \
 		27_calc_texture.c \
 		28_adapt_texture.c \
 		29_draw.c \
+		90_mlx_destories.c \
 		99_free_handle.c
 
 

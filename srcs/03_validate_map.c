@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   04_validate_map.c                                  :+:      :+:    :+:   */
+/*   03_validate_map.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jaehukim <jaehukim42@student.42gyeong      +#+  +:+       +#+        */
+/*   By: kjung <kjung@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 16:32:22 by jaehukim          #+#    #+#             */
-/*   Updated: 2025/02/06 16:32:24 by jaehukim         ###   ########.fr       */
+/*   Updated: 2025/02/22 19:08:30 by kjung            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,8 +92,6 @@ int	ft_validate_map(t_file **f)
 {
 	padding_map(f);
 	if (map_check((*f)->maparr, (*f)->map_width, (*f)->map_height, f))
-		ft_exit("Invalid Map\n", 1, f);
-	else
-		printf("Success\n");
+		return (1);
 	return (0);
 }

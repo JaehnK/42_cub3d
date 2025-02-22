@@ -6,7 +6,7 @@
 /*   By: kjung <kjung@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/09 19:49:59 by jaehukim          #+#    #+#             */
-/*   Updated: 2025/02/18 16:46:01 by kjung            ###   ########.fr       */
+/*   Updated: 2025/02/22 17:35:09 by kjung            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,10 +22,6 @@ void	ft_mlx_init(t_data *data)
 									&(data->img.bits_per_pixel), \
 									&(data->img.line_length), \
 									&(data->img.endian));
-	printf("Image: %p\n", data->img.img);
-	printf("Address: %p\n", data->img.data);
-	printf("BPP: %d\n", data->img.bits_per_pixel);
-	printf("Line Length: %d\n", data->img.line_length);
 }
 
 void	my_mlx_pixel_put(t_data *data, int x, int y, int color)

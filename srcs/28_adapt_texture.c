@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   28_adapt_texture.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jaehukim <jaehukim42@student.42gyeong      +#+  +:+       +#+        */
+/*   By: kjung <kjung@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 17:59:10 by jaehukim          #+#    #+#             */
-/*   Updated: 2025/02/20 17:59:11 by jaehukim         ###   ########.fr       */
+/*   Updated: 2025/02/22 20:32:10 by kjung            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,15 +51,15 @@ static void	adapt_wall_texture(int x, t_cub *cub)
 	double	tex_pos;
 
 	y = cub->ray.draw_start;
-	step = 1.0 * texHeight / cub->ray.line_height;
+	step = 1.0 * TEXHEIGHT / cub->ray.line_height;
 	tex_pos = (cub->ray.draw_start - SCREEN_HEIGHT / 2 + \
 				cub->ray.line_height / 2) * step;
 	while (y < cub->ray.draw_end)
 	{
-		tex_y = (int)tex_pos & (texHeight - 1);
+		tex_y = (int)tex_pos & (TEXHEIGHT - 1);
 		tex_pos += step;
 		colour = cub->data->textures[cub->ray.tex_num] \
-				[texHeight * tex_y + cub->ray.tex_x];
+				[TEXHEIGHT * tex_y + cub->ray.tex_x];
 		if (cub->ray.side == 1)
 			colour = (colour >> 1) & 8355711;
 		cub->ray.buf[y][x] = colour;

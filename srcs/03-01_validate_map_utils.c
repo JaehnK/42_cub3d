@@ -6,7 +6,7 @@
 /*   By: kjung <kjung@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/09 19:30:16 by jaehukim          #+#    #+#             */
-/*   Updated: 2025/02/18 16:14:56 by kjung            ###   ########.fr       */
+/*   Updated: 2025/02/21 15:19:53 by kjung            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,27 @@ int	check_inside_zero(char **map, int i, int j)
 	return (0);
 }
 
+static int	get_pos_sub(char **map, int i, int j, t_file **f)
+{
+	if (map[i][j] == 'S')
+	{
+		(*f)->pos_dir = '3';
+		(*f)->pos_dir_x = 0.0;
+		(*f)->pos_dir_y = -1.0;
+		map[i][j] = '0';
+		return (1);
+	}
+	else if (map[i][j] == 'N')
+	{
+		(*f)->pos_dir = '4';
+		(*f)->pos_dir_x = 0.0;
+		(*f)->pos_dir_y = 1.0;
+		map[i][j] = '0';
+		return (1);
+	}
+	return (0);
+}
+
 int	get_pos(char **map, int i, int j, t_file **f)
 {
 	(*f)->pos_x = j;
@@ -55,19 +76,10 @@ int	get_pos(char **map, int i, int j, t_file **f)
 		(*f)->pos_dir_y = 0.0;
 		map[i][j] = '0';
 	}
-	else if (map[i][j] == 'S')
+	else
 	{
-		(*f)->pos_dir = '3';
-		(*f)->pos_dir_x = 0.0;
-		(*f)->pos_dir_y = -1.0;
-		map[i][j] = '0';
-	}
-	else if (map[i][j] == 'N')
-	{
-		(*f)->pos_dir = '4';
-		(*f)->pos_dir_x = 0.0;
-		(*f)->pos_dir_y = 1.0;
-		map[i][j] = '0';
+		if (!get_pos_sub(map, i, j, f))
+			return (0);
 	}
 	return (0);
 }
