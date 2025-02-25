@@ -93,8 +93,8 @@ int	ft_validate_map(t_file **f)
 	padding_map(f);
 	if (map_check((*f)->maparr, (*f)->map_width, (*f)->map_height, f))
 	{
-		ft_putstr_fd("Error:\nInvalid Map\n", 2);
-		return (1);
+		ft_putstr_fd("Error\nInvalid Map\n", 2);
+		exit(2);
 	}
 	return (0);
 }

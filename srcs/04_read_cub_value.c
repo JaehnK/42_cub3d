@@ -18,11 +18,14 @@ static int	load_image(t_cub **cub, int *texture, char *path, t_img *img)
 	int	x;
 
 	y = 0;
-	x = 0;
 	img->img = mlx_xpm_file_to_image(\
 			(*cub)->data->mlx, path, &img->img_width, &img->img_height);
 	if (img->img == NULL)
-		return (1);
+	{
+		ft_putstr_fd("Error\nXPM Image Not Found\n", 2);
+		close_window((void *) *cub);
+		exit (1);
+	}
 	img->data = (int *)mlx_get_data_addr(\
 			img->img, &img->bits_per_pixel, &img->size_l, &img->endian);
 	while (y < img->img_height)

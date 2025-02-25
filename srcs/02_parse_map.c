@@ -34,6 +34,7 @@ t_map_list	*alloc_new_node(int idx, char *line, t_map_list **head)
 
 t_map_list	*alloc_map_list(int fd)
 {
+	int			i;
 	int			idx;
 	char		*line;
 	t_map_list	*head;
@@ -41,23 +42,26 @@ t_map_list	*alloc_map_list(int fd)
 	idx = 0;
 	line = get_next_line(fd);
 	head = NULL;
-	int i  = 0;
 	while (line)
 	{
+		i = 0;
 		while (line[i])
 		{
-			if (line[i] != '1' && line[i] != '0' && line[i] != 'N'&& line[i] != 'E'&& line[i] != 'W'&& line[i] != 'S'&& line[i] != '\n')
+			if (line[i] != '1' && line[i] != '0' && line[i] != 'N'\
+				&& line[i] != 'E'&& line[i] != 'W'&& line[i] != 'S'&& \
+				line[i] != '\n' && line[i] != ' ')
+			{
 				exit(1) ;
+			}
+				
 			i++;
+			
 		}
-		//else
-		{
-			if (!head)
-				head = alloc_new_node(idx++, line, NULL);
-			else
-				alloc_new_node(idx++, line, &head);
-			line = get_next_line(fd);
-		}
+		if (!head)
+			head = alloc_new_node(idx++, line, NULL);
+		else
+			alloc_new_node(idx++, line, &head);
+		line = get_next_line(fd);
 		head->idx = idx;
 	}
 	return (head);

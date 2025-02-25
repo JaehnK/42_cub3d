@@ -23,12 +23,12 @@ static int	ft_initalise(int ac, char **av, t_cub *cub)
 	}
 	if (init_world_map(cub))
 	{
-		printf("Error: World map initialization failed\n");
+		ft_putstr_fd("Error\nWorld map initialization failed\n", 2);
 		return (1);
 	}
 	if (init_ray_info(cub))
 	{
-		printf("Error: Ray info initialization failed\n");
+		ft_putstr_fd("Error\nRay info initialization failed\n", 2);
 		return (1);
 	}
 	return (0);

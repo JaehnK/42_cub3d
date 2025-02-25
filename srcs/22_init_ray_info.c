@@ -17,7 +17,7 @@ int	init_ray_info(t_cub *cub)
 	if (cub->file->pos_x < 0 || cub->file->pos_x >= cub->ray.map_width || \
 		cub->file->pos_y < 0 || cub->file->pos_y >= cub->ray.map_height)
 	{
-		printf("Error: Invalid player position (%f, %f) for map size %dx%d\n",
+		printf("Error\nInvalid player position (%f, %f) for map size %dx%d\n",
 			cub->file->pos_x, cub->file->pos_y,
 			cub->ray.map_width, cub->ray.map_height);
 		return (1);
