@@ -6,7 +6,7 @@
 /*   By: kjung <kjung@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/22 20:23:30 by kjung             #+#    #+#             */
-/*   Updated: 2025/02/22 20:39:11 by kjung            ###   ########.fr       */
+/*   Updated: 2025/02/22 23:34:24 by kjung            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,9 +29,6 @@
 # define ROT_SPEED 0.05
 # define TEXWIDTH 64
 # define TEXHEIGHT 64
-# define X_EVENT_KEY_PRESS	2
-# define X_EVENT_KEY_RELEASE	3
-# define X_EVENT_KEY_EXIT	17
 # define MAPWIDTH 24
 # define MAPHEIGHT 24
 
@@ -143,6 +140,8 @@ int		ft_read_cub_value(t_file **f, t_cub **cub);
 void	ft_mlx_init(t_data *data);
 void	my_mlx_pixel_put(t_data *data, int x, int y, int color);
 int		key_press(int key, t_cub *cub);
+void	ft_key_r_arrow(t_cub *cub);
+void	ft_key_l_arrow(t_cub *cub);
 int		main_loop(t_cub **cub);
 int		init_world_map(t_cub *cub);
 int		init_ray_info(t_cub *cub);

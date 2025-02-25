@@ -6,7 +6,7 @@
 #    By: kjung <kjung@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/02/03 11:43:32 by jaehukim          #+#    #+#              #
-#    Updated: 2025/02/22 20:28:08 by kjung            ###   ########.fr        #
+#    Updated: 2025/02/22 23:30:43 by kjung            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -35,6 +35,7 @@ SRCS =	00_main.c \
 		04_read_cub_value.c \
 		10_mlx.c \
 		11_mlx_keyhook.c \
+		11-01_mlx_keyhook_arrow.c \
 		20_main_loop.c \
 		21_init_worldmap.c \
 		22_init_ray_info.c \
