@@ -86,7 +86,11 @@ int	get_dirs(int fd, t_file **f)
 			continue ;
 		}
 		if (assign_dir(line, f))
+		{
+			free(line);
 			return (1);
+		}
+			
 		free(line);
 		if (ft_has_dirs(*f))
 			break ;
@@ -102,22 +106,18 @@ int	ft_parse_file(int ac, char **av, t_file **f)
 
 	*f = ft_calloc(sizeof(t_file), 1);
 	if (validate_file(ac, av, f))
-	{
 		ft_exit("Error\nInvalid Map\n", 18, f);
-		return(1);
-	}
 	fd = open((*f)->filename, O_RDONLY);
 	if (get_dirs(fd, f))
 	{
 		close(fd);
-		ft_exit("Error\nInvalid Map\n", 18, f);
+		ft_exit("Error\nInvalid Map(XPM)\n", 18, f);
 		return (1);
 	}
 	if (ft_parse_map(fd, f))
 	{
 		close(fd);
 		ft_exit("Error\nInvalid Map\n", 18, f);
-		return(1);
 	}
 	close(fd);
 	return (0);

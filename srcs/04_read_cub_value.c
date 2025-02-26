@@ -12,6 +12,30 @@
 
 #include "cub3d.h"
 
+static int	ft_atoi_cub(char *str)
+{
+	int			idx;
+	long long	ret;
+	long long	base;
+
+	if (!str)
+		return (-1);
+	idx = ft_strlen(str) - 1;
+	ret = 0;
+	base = 1;
+	while (idx >= 0)
+	{
+		if (str[idx] < '0' || str[idx] > '9')
+			return (-1);
+		ret += (str[idx] - '0') * base;
+		base *= 10;
+		idx--;
+		if (ret > 255 || base == 100000000000)
+			return (-1);
+	}
+	return (ret);
+}
+
 static int	load_image(t_cub **cub, int *texture, char *path, t_img *img)
 {
 	int	y;
@@ -42,8 +66,10 @@ static int	load_image(t_cub **cub, int *texture, char *path, t_img *img)
 	return (0);
 }
 
-int	create_trgb(int t, int r, int g, int b)
+static int	create_trgb(int t, int r, int g, int b)
 {
+	if (r < 0 || g < 0 || b < 0)
+		return (-1);
 	return (t << 24 | r << 16 | g << 8 | b);
 }
 
@@ -60,7 +86,7 @@ static int	load_colour(char *str)
 		return (-1);
 	while (i < 3)
 	{
-		rgb[i] = ft_atoi(colours[i]);
+		rgb[i] = ft_atoi_cub(colours[i]);
 		free(colours[i++]);
 	}
 	colour = create_trgb(0, rgb[0], rgb[1], rgb[2]);

@@ -12,6 +12,21 @@
 
 #include "cub3d.h"
 
+int	ft_isspace2(char *str)
+{
+	int	i;
+
+	i = 0;
+	while (str[i])
+	{
+		if (str[i] == ' ' || str[i] == '\t' || str[i] == '\n')
+			i++;
+		else
+			return (1);
+	}
+	return (0);
+}
+
 t_map_list	*alloc_new_node(int idx, char *line, t_map_list **head)
 {
 	t_map_list	*new;
@@ -47,15 +62,14 @@ t_map_list	*alloc_map_list(int fd)
 		i = 0;
 		while (line[i])
 		{
-			if (line[i] != '1' && line[i] != '0' && line[i] != 'N'\
-				&& line[i] != 'E'&& line[i] != 'W'&& line[i] != 'S'&& \
-				line[i] != '\n' && line[i] != ' ')
+			if (line[i] != '1' && line[i] != '0' && line[i] != 'N' \
+				&& line[i] != 'E' && line[i] != 'W' && line[i] != 'S' \
+				&& line[i] != '\n' && line[i] != ' ')
 			{
-				exit(1) ;
+				ft_putstr_fd("Error\nInvalid Map\n", 2);
+				exit(1);
 			}
-				
 			i++;
-			
 		}
 		if (!head)
 			head = alloc_new_node(idx++, line, NULL);
@@ -79,6 +93,15 @@ int	convert_list_to_array(t_map_list **node, t_file **f)
 	(*f)->maparr = malloc(sizeof(char *) * ((*node)->idx + 1));
 	while (*node)
 	{
+		if (!ft_isspace2((*node)->line))
+		{
+			tmp = (*node);
+			if ((*node) != NULL)
+				(*node) = (*node)->next;
+			free(tmp->line);
+			free(tmp);
+			continue ;
+		}
 		line = ft_split((*node)->line, '\n');
 		(*f)->maparr[i++] = ft_strdup(line[0]);
 		if ((int) ft_strlen((*f)->maparr[i - 1]) > mapwidth)

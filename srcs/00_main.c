@@ -46,8 +46,9 @@ int	main(int argc, char **argv)
 	ft_mlx_init(cub->data);
 	if (ft_read_cub_value(&(cub->file), &cub))
 	{
+		ft_putstr_fd("Error\nCheck Colour Value\n", 2);
 		close_window((void *) cub);
-		return (1);
+		exit (1);
 	}	
 	mlx_loop_hook(cub->data->mlx, (void *)main_loop, &cub);
 	mlx_hook(cub->data->win, 2, 1L << 0, key_press, cub);
