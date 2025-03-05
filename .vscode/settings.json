@@ -1,0 +1,13 @@
+{
+	"files.associations": {
+		"cub3d.h": "c",
+		"mlx.h": "c",
+		"errno.h": "c",
+		"map": "c",
+		"format": "c",
+		"stdlib.h": "c",
+		"key_linux.h": "c",
+		"stdio.h": "c",
+		"libft.h": "c"
+	}
+}
