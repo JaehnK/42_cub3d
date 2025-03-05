@@ -6,7 +6,7 @@
 /*   By: kjung <kjung@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/09 19:30:16 by jaehukim          #+#    #+#             */
-/*   Updated: 2025/02/23 00:19:04 by kjung            ###   ########.fr       */
+/*   Updated: 2025/03/05 16:54:33 by kjung            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,8 @@ int	check_inside_zero(char **map, int i, int j)
 {
 	if (map[i][j] == '0')
 	{
-		if (map[i - 1][j] == ' ' || map[i - 1][j - 1] == ' ' || \
-			map[i + 1][j] == ' ' || map[i + 1][j + 1] == ' ')
+		if (map[i - 1][j] == ' ' || map[i][j - 1] == ' ' || \
+			map[i + 1][j] == ' ' || map[i][j + 1] == ' ')
 			return (1);
 	}
 	return (0);
